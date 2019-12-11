@@ -75,18 +75,32 @@ body {
         }
     }
 
-    // This is the logo at the top of the ToC
-    .logo {
-        display: block;
-        max-width: 100%;
-        margin-bottom: $logo-margin;
+    .logo-wrap {
+        display: flex;
+        margin-left: 14px;
+        margin-top: 16px;
+        margin-bottom: 16px;
+        align-items: center;
+        text-decoration: none;
+        color: $main-text;
+
+        // This is the logo at the top of the ToC
+        .logo {
+            display: block;
+            max-width: 100%;
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+        }
     }
+
+
+
 
     &>.search {
         position: relative;
 
         input {
-            background: $nav-bg;
             border-width: 0 0 1px 0;
             border-color: $search-box-border-color;
             padding: 6px 0 6px 20px;
@@ -94,7 +108,6 @@ body {
             margin: $nav-v-padding $nav-padding;
             width: $nav-width - ($nav-padding*2);
             outline: none;
-            color: $nav-text;
             border-radius: 0;
             /* ios has a default border radius */
         }
@@ -117,7 +130,6 @@ body {
         transition-property: height, margin;
         transition-duration: 180ms;
         transition-timing-function: ease-in-out;
-        background: $nav-subitem-bg;
 
         &.visible {
             height: 30%;
@@ -132,6 +144,7 @@ body {
         a {
             color: $nav-text;
             text-decoration: none;
+            font-weight: 400;
 
             &:hover {
                 text-decoration: underline;
@@ -160,8 +173,19 @@ body {
 
     // This is the currently selected ToC entry
     .toc-link.active {
-        background-color: $nav-active-bg;
-        color: $nav-active-text;
+        position: relative;
+
+        // background-color: $nav-active-bg;
+        // color: $nav-active-text;
+        &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #009fd9;
+        }
     }
 
     // this is parent links of the currently selected ToC entry
@@ -172,8 +196,8 @@ body {
 
     .toc-list-h2 {
         display: none;
-        background-color: $nav-subitem-bg;
-        font-weight: 500;
+        // background-color: $nav-subitem-bg;
+        font-weight: 400;
     }
 
     .toc-h2 {
@@ -279,7 +303,7 @@ body {
     // half of the content always this background color.
     .dark-box {
         width: $examples-width;
-        background-color: $examples-bg;
+        background: linear-gradient(to right, #eee, #fff 20%);
         position: absolute;
         right: 0;
         top: 0;
@@ -287,6 +311,7 @@ body {
     }
 
     .lang-selector {
+        display: none;
         position: fixed;
         z-index: 50;
         border-bottom: 5px solid $lang-select-active-bg;
@@ -385,7 +410,7 @@ body {
         margin-top: 2em;
         border-top: 1px solid #e9eced;
         border-bottom: 1px solid #e9eced;
-        background-color: #fdfdfd;
+        background-color: #fff;
     }
 
     h1:first-child,

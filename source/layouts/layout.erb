@@ -31,6 +31,11 @@ under the License.
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title><%= current_page.data.title || "API Documentation" %></title>
 
+    <link rel="icon" href="images/fav.ico">
+    <link rel="apple-touch-icon" href="images/152x152.png">
+    <link rel="icon" type="image/png" href="images/32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="images/16x16.png" sizes="16x16">
+
     <style>
       <%= Rouge::Themes::MonokaiSublime.render(:scope => '.highlight') %>
     </style>
@@ -51,8 +56,9 @@ under the License.
       </span>
     </a>
     <div class="toc-wrapper">
-      <a href="https://thumbtack.com" target="_blank">
-        <%= image_tag "logo.png", class: 'logo' %>
+      <a href="https://thumbtack.com" target="_blank" class="logo-wrap">
+        <%= image_tag "logo.svg", class: 'logo' %>
+        <div class="logo-title">Thumbtack API</div>
       </a>
       <% if language_tabs.any? %>
         <div class="lang-selector">

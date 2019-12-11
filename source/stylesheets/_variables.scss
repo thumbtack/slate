@@ -39,9 +39,9 @@ under the License.
 // BACKGROUND COLORS
 ////////////////////
 $nav-bg: #fff !default;
-$examples-bg: #fff !default;
-$code-bg: #1E2224 !default;
-$code-annotation-bg: #191D1F !default;
+$examples-bg: #d3d4d5 !default;
+$code-bg: #444894 !default;
+$code-annotation-bg: #383c80 !default;
 $nav-subitem-bg: #1E2224 !default;
 $nav-active-bg: #009fd9 !default;
 $nav-active-parent-bg: #1E2224 !default; // parent links of the current section
@@ -59,7 +59,7 @@ $search-notice-bg: #c97a7e !default;
 // TEXT COLORS
 ////////////////////
 $main-text: #2f3033 !default; // main content text color
-$nav-text: #fff !default;
+$nav-text: $main-text !default;
 $nav-active-text: #fff !default;
 $nav-active-parent-text: #fff !default; // parent links of the current section
 $lang-select-text: #fff !default; // color of unselected language tab text
