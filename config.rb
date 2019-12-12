@@ -13,6 +13,7 @@ set :markdown,
     with_toc_data: true,
     no_intra_emphasis: true,
     renderer: UniqueHeadCounter
+    activate :livereload
 
 # Assets
 set :css_dir, 'stylesheets'
