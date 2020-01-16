@@ -18,6 +18,7 @@ search: true
 
 Thumbtack provides a set of APIs that expose the service and quote details for a pro.
 The purpose of these APIs is to provide a mechanism for data integration with third-party CRM systems.
+Your use of an API is subject to the <a href='#api-terms-of-use'>API Terms of Use</a>.
 
 # Authentication
 
