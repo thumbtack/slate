@@ -9,6 +9,7 @@ toc_footers:
 
 includes:
   - errors
+  - terms_of_use
 
 search: true
 ---
