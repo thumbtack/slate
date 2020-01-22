@@ -23,10 +23,10 @@ Thumbtack will call. To support two way messaging, both Thumbtack and the Supply
 API endpoints for the other party to call. 
 
 **Note:** Thumbtack **does not provide customer contact information (email or phone number)** in the lead. 
-In order for the Supply Partner to contact the Thumbtack customer, the communication needs to be a 
-message (rather than call) and the message needs to be delivered via API.
+In order for the Supply Partner to contact the Thumbtack customer, the communication method needs to be a 
+message (rather than a call) and the message needs to be delivered via API.
 
-Your use of an API is subject to the <a href='#api-terms-of-use'>API Terms of Use</a>.
+Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Terms of Use</a>.
 
 # Authentication
 
@@ -47,7 +47,15 @@ and password. The basic header looks as follows:
 
 `<encoding>` is the base64 encoding of the username followed by a colon, followed by password.
 
+Thumbtack will provide Partners with two sets of credentials - one for Thumbtack's test environment and 
+one for Thumbtack's production environment.
+
 # Thumbtack Endpoints
+
+Thumbtack will expose the following endpoints to Partners. 
+All endpoints should be versioned to support future schema changes. 
+Endpoints will use HTTP basic authentication, and Thumbtack will provide 
+Partners with username and password for Partners to call these endpoints.
 
 ## Messages
 
@@ -68,11 +76,19 @@ curl https://api.thumbtack.com/v1/lead/123/message
 ```
 
 Send messages on behalf of the Pro to a Thumbtack customer for a given lead.
-This is an endpoint Thumbtack has created for Partners to call.
+This is an endpoint Thumbtack has created for Partners to call. Thumbtack provides both a production
+and test environment endpoint.
 
-### HTTP Endpoint
+### HTTP Endpoint (Production Environment)
 
 `POST https://api.thumbtack.com/v1/business/:businessID/lead/:leadID/message`
+
+`:businessID` is the identifier of your business.  
+`:leadID` is the identifier of the lead whose customer you wish to message.
+
+### HTTP Endpoint (Test Environment)
+
+`POST https://staging-pro-api.thumbtack.com/v1/business/:businessID/lead/:leadID/message`
 
 `:businessID` is the identifier of your business.  
 `:leadID` is the identifier of the lead whose customer you wish to message.
@@ -87,7 +103,7 @@ text | string | Text of the message | Y
 
 Partners will expose the following endpoints to Thumbtack. 
 All endpoints should be versioned to support future schema changes. 
-Endpoints will use HTTP basic authentication, and partners will provide 
+Endpoints will use HTTP basic authentication, and Partners will provide 
 Thumbtack with username and password for Thumbtack to call these endpoints.
 
 ## Leads
@@ -226,7 +242,104 @@ message.createTimestamp | string | Unix timestamp (seconds) of when message was 
 message.text | string | Text of the message | Y
 
 
-# Help
+# Development Guide
+
+Please follow the steps outlined in this section to integrate with Thumbtack's API. 
+
+*Note that in order to call Thumbtack's test endpoints, Partners will need test credentials (username + password). 
+Please <a href='#contact-us'>contact us</a> and we will get you set up with the appropriate test credentials.*
+
+## Build Partner Endpoints
+
+The first step is to build the endpoints outlined in the <a href='#partner-endpoints'>Partner Endpoints</a> section.  
+
+Thumbtack supports both a test and production environment, so we recommend Partners to build both test and production
+endpoints as well. At a minimum, it is recommended that Partners test their endpoints by calling them (using `curl` or
+any similar tool) and validating that the endpoints return a successful `HTTP 200` response.  
+
+The purpose of this is to ensure that the Partner endpoints can accept the payloads Thumbtack will provide. 
+Feel free to use the sample request bodies provided throughout this guide to simulate the payloads Thumbtack will provide. 
+
+## Create Test Data on Thumbtack
+
+> Sample Response
+
+```json
+{
+    "leadID": "380497493950742534",
+    "createTimestamp": "1579643094",
+    "price": "More information needed to give an estimate",
+    "request": {
+        "requestID": "380497492346044421",
+        "category": "House Cleaning",
+        "title": "House Cleaning",
+        "description": "I am looking for someone to clean my apartment before I move",
+        "location": {
+            "city": "San Francisco",
+            "state": "CA",
+            "zipCode": "94103"
+        },
+        "travelPreferences": "Professional must travel to my address"
+    },
+    "customer": {
+        "customerID": "380497491930800133",
+        "name": "John Doe"
+    },
+    "business": {
+        "businessID": "380497492389642246",
+        "name": "Mr. Clean's Sparkly Cleaning Service"
+    }
+}
+```
+
+Once you have successfully created your endpoints, the next step is to test calling 
+<a href='#messages'>Thumbtack's messages endpoint.</a>.  
+
+In order to do this, you will need to provide a valid `businessID` and `leadID`. By valid, we mean the `businessID` 
+and `leadID` need to exist on Thumbtack. Thus, the Partner needs to create a dummy business and lead on Thumbtack's 
+test environment.  
+
+To do this, we have provided an endpoint Partners can call to generate this dummy data.
+
+### HTTP Endpoint
+
+`POST https://staging-pro-api.thumbtack.com/v1/test/create-lead` 
+
+Calling this endpoint will create a dummy business and lead on Thumbtack's test environment. 
+On the right, we've provided a sample response. 
+ 
+## Test Thumbtack Messaging Endpoint
+
+Now that you've generated dummy data on Thumbtack's test environment, you should be able to test calling Thumbtack's
+messages endpoint. 
+
+Take the `businessID` and `leadID` that were returned from calling `https://staging-pro-api.thumbtack.com/v1/test/create-lead` 
+and construct the appropriate Thumbtack messages endpoint.
+
+In our case `businessID` is `380497492389642246` and `leadID` is `380497493950742534` so our Thumbtack messages endpoint
+would look like - `https://api.thumbtack.com/v1/business/380497492389642246/lead/380497493950742534/message`. 
+
+However, **because we want to run this on our test environment**, we want to use the `staging-pro-api` host instead of
+the `api` host. Thus, the endpoint we want to call would be `https://staging-pro-api.thumbtack.com/v1/business/380497492389642246/lead/380497493950742534/message`.
+
+Call this endpoint as detailed in the <a href='#messages'>Thumbtack's messages endpoint</a> section, and validate
+that you get a `success` response.                  
+ 
+## Go To Production
+
+At this point, the Partner's endpoints have been validated to accept Thumbtack payloads and the Partner has been 
+able to successfully call Thumbtack's endpoint to send a message. The next step is to move the integration to
+Production.
+
+To do this, the Partner needs to <a href='#contact-us'>contact Thumbtack</a> to set up Production credentials 
+for the Partner's integration as well as inform Thumbtack about the Partner's endpoints. A Thumbtack representative
+will walk through the final steps to getting the Partner integrated onto the Thumbtack production environment. 
+
+Once a Partner has been fully set up on Production, Thumbtack will start pinging the Partner's endpoints
+when a Partner receives both leads and messages from Thumbtack customers. The Partner will be expected to ping
+Thumbtack's messages endpoint when they want to respond to a Thumbtack customer.
+
+# Contact Us
 
 If you have any questions, feel free to reach out to us at
 partnerproducts-eng AT thumbtack DOT com
