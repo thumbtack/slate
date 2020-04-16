@@ -50,12 +50,19 @@ and password. The basic header looks as follows:
 Thumbtack will provide Partners with two sets of credentials - one for Thumbtack's test environment and 
 one for Thumbtack's production environment.
 
+Note that `curl` provides a way to pass in `<username>` and `<password>` like so:  
+`--user '<thumbtack_username>:<thumbtack_password>'`. This is an acceptable alternative to providing the credentials
+as an Authorization header. Feel free to read up on
+<a href='https://en.wikipedia.org/wiki/Basic_access_authentication'>Basic Auth</a> to understand the relationship
+between username/password and the encoded Authorization header.
+
 # Thumbtack Endpoints
 
 Thumbtack will expose the following endpoints to Partners. 
 All endpoints should be versioned to support future schema changes. 
 Endpoints will use HTTP basic authentication, and Thumbtack will provide 
 Partners with username and password for Partners to call these endpoints.
+Note that passing in the `Content-Type` header is required.
 
 ## Messages
 
@@ -64,6 +71,7 @@ Partners with username and password for Partners to call these endpoints.
 ```shell
 curl https://api.thumbtack.com/v1/lead/123/message
   -H "Authorization: AUTH_HEADER"
+  -H 'Content-Type:application/json'
   -d '{"text": "Hello John, how can I help you?"}'
 ```
 
@@ -216,7 +224,7 @@ business.name | string | Business name | Y
 ```shell
 curl -X POST https://www.api.[partner].com/v1/message
     -d data.json
-    -H 'Content-Type:application/json' 
+    -H 'Content-Type:application/json'
     --user '<thumbtack_username>:<thumbtack_password>'
 ```
 
@@ -257,8 +265,8 @@ Thumbtack supports both a test and production environment, so we recommend Partn
 endpoints as well. At a minimum, it is recommended that Partners test their endpoints by calling them (using `curl` or
 any similar tool) and validating that the endpoints return a successful `HTTP 200` response.  
 
-The purpose of this is to ensure that the Partner endpoints can accept the payloads Thumbtack will provide. 
-Feel free to use the sample request bodies provided throughout this guide to simulate the payloads Thumbtack will provide. 
+The purpose of this is to ensure that the Partner endpoints can accept the payloads Thumbtack will provide.
+Feel free to use the sample request bodies provided throughout this guide to simulate the payloads Thumbtack will provide.
 
 ## Create Test Data on Thumbtack
 
@@ -292,6 +300,17 @@ Feel free to use the sample request bodies provided throughout this guide to sim
 }
 ```
 
+> Sample Request
+
+```shell
+curl -X POST https://staging-pro-api.thumbtack.com/v1/test/create-lead
+    -H 'Content-Type:application/json'
+    --user '<thumbtack_username>:<thumbtack_password>'
+    -d '{
+        "businessID": <business_id>
+    }'
+```
+
 Once you have successfully created your endpoints, the next step is to test calling 
 <a href='#messages'>Thumbtack's messages endpoint.</a>.  
 
@@ -306,7 +325,11 @@ To do this, we have provided an endpoint Partners can call to generate this dumm
 `POST https://staging-pro-api.thumbtack.com/v1/test/create-lead` 
 
 Calling this endpoint will create a dummy business and lead on Thumbtack's test environment. 
-On the right, we've provided a sample response. 
+On the right, we've provided a sample request and response. Note that passing in the `Content-Type` header is required.
+
+**Note**: For the sample request, the `businessID` field is optional (although if you have been provided a `businessID`,
+it's recommended you provide it in the request. However, if you don't have a `businessID` you must provide an empty
+data payload.
  
 ## Test Thumbtack Messaging Endpoint
 
