@@ -130,7 +130,7 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
     "location": {
       "city": "San Jose",
       "state": "CA",
-      "zipCode": "95125",
+      "zipCode": "95125"
     },
     "travelPreferences": "Professional must travel to my address.",
     "details": [
@@ -141,17 +141,16 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
       {
         "question": "Number of rooms",
         "answer": "4 rooms"
-      },
-      ...
+      }
     ]
   },
   "customer": {
     "customerID": "331138063184986319",
-    "name": "Jay J.",
+    "name": "Jay J."
   },
   "business": {
     "businessID": "286845156044809661",
-    "name": "Tim's Painting Business",
+    "name": "Tim's Painting Business"
   }
 }
 ```
@@ -291,7 +290,7 @@ Feel free to use the sample request bodies provided throughout this guide to sim
     },
     "customer": {
         "customerID": "380497491930800133",
-        "name": "John Doe"
+        "name": "John D."
     },
     "business": {
         "businessID": "380497492389642246",
