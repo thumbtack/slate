@@ -281,6 +281,7 @@ Feel free to use the sample request bodies provided throughout this guide to sim
         "category": "House Cleaning",
         "title": "House Cleaning",
         "description": "I am looking for someone to clean my apartment before I move",
+        "schedule": "Date: Tue, May 05 2020\nTime: 6:00 PM\nLength: 3.5 hours",
         "location": {
             "city": "San Francisco",
             "state": "CA",
