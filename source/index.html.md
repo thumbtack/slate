@@ -127,6 +127,7 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
     "category": "Interior Painting",
     "title": "Interior Painting",
     "description": "There is a stain on the door that needs to be touched up.",
+    "schedule": "Date: Tue, May 05 2020\nTime: 6:00 PM\nLength: 3.5 hours",
     "location": {
       "city": "San Jose",
       "state": "CA",
