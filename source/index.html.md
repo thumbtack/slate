@@ -186,6 +186,7 @@ request.requestID | string | ID of the request | Y
 request.category | string | Category of the request | Y
 request.title | string | Title of the request | Y
 request.description | string | Description of the request | N
+request.schedule | string | Details on when the customer wants to complete the job | N
 request.location | object | JSON location object | Y
 request.location.city | string | City for the request location | Y
 request.location.state | string | State (two letter abbreviation) for the request location | Y
