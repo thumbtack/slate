@@ -147,7 +147,7 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
   },
   "customer": {
     "customerID": "331138063184986319",
-    "name": "Jay J."
+    "name": "John Davis"
   },
   "business": {
     "businessID": "286845156044809661",
@@ -293,7 +293,7 @@ Feel free to use the sample request bodies provided throughout this guide to sim
     },
     "customer": {
         "customerID": "380497491930800133",
-        "name": "John D."
+        "name": "John Davis"
     },
     "business": {
         "businessID": "380497492389642246",
