@@ -1,5 +1,5 @@
 ---
-title: Thumbtack API Reference
+title: Thumbtack Partner API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
@@ -16,17 +16,34 @@ search: true
 
 # Introduction
 
-The purpose of this API is to enable Supply Partners to integrate Thumbtack leads into their customer
-acquisition workflows. This is accomplished by supporting two functions - **(1) lead transfer** and 
-**(2) two way messaging**. To support lead transfer, the Supply Partner will expose an API endpoint that 
-Thumbtack will call. To support two way messaging, both Thumbtack and the Supply Partner will expose 
-API endpoints for the other party to call. 
-
-**Note:** Thumbtack **does not provide customer contact information (email or phone number)** in the lead. 
-In order for the Supply Partner to contact the Thumbtack customer, the communication method needs to be a 
-message (rather than a call) and the message needs to be delivered via API.
+The purpose of Thumbtack's Partner API is to enable Partners to seamlessly serve Thumbtack content on Partner
+platforms. Currently, the content being served by the API includes information about Thumbtack categories and Pros.
+However, our API is under active development, so we are constantly adding more content to the API upon request.  
 
 Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Terms of Use</a>.
+
+# Partnership Mechanics
+
+1. Partners show Thumbtack content (Pros and/or categories) on their platforms.   
+2. Thumbtack provides links for each piece of content. These links contain partner tracking information, which allow
+Thumbtack to attribute the Partner's users to the Partner.  
+3. By clicking the Thumbtack content, the Partner's users are directed to Thumbtack.   
+4. When a Partner's user contacts a Pro on Thumbtack, the associated revenue is shared with the Partner.  
+
+# Spotlight
+## Nextdoor
+
+<img src="images/nextdoor.png" alt="Nextdoor Example" title="Nextdoor Example" height="370px"
+    style="display:block; margin-left:auto; margin-right:auto;""/>
+
+## News Break
+
+<div id="nb_images" style="display:flex; margin-right:50%">
+    <img src="images/newsbreak_categories.png" alt="News Break Categories" title="News Break Categories Example" height="370px"
+        style="margin-left: auto; margin-right: 10%;"/>
+    <img src="images/newsbreak_services.png" alt="News Break Services" title="News Break Services Example" height="370px"
+        style="margin-right: auto"/>
+</div>
 
 # Authentication
 
@@ -40,329 +57,190 @@ Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Te
 
 > Make sure to replace `AUTH_HEADER` with your personal header.
  
-Where applicable, APIs use HTTP basic authentication. Thumbtack will provide Partners with a username
+Where applicable, APIs use HTTP basic access authentication. Thumbtack will provide Partners with a username
 and password. The basic header looks as follows:
 
 `Authorization: Basic <encoding>`
 
-`<encoding>` is the base64 encoding of the username followed by a colon, followed by password.
+`<encoding>` is the base64 encoding of the username followed by a colon, followed by the password.
 
 Thumbtack will provide Partners with two sets of credentials - one for Thumbtack's test environment and 
 one for Thumbtack's production environment.
 
-Note that `curl` provides a way to pass in `<username>` and `<password>` like so:  
-`--user '<thumbtack_username>:<thumbtack_password>'`. This is an acceptable alternative to providing the credentials
-as an Authorization header. Feel free to read up on
-<a href='https://en.wikipedia.org/wiki/Basic_access_authentication'>Basic Auth</a> to understand the relationship
-between username/password and the encoded Authorization header.
+# Endpoints
 
-# Thumbtack Endpoints
-
-Thumbtack will expose the following endpoints to Partners. 
-All endpoints should be versioned to support future schema changes. 
-Endpoints will use HTTP basic authentication, and Thumbtack will provide 
+Thumbtack exposes the following endpoints for Partners. 
+All endpoints are versioned to support future schema changes. 
+Endpoints will use HTTP basic access authentication, and Thumbtack will provide 
 Partners with username and password for Partners to call these endpoints.
-Note that passing in the `Content-Type` header is required.
 
-## Messages
+## Pros
 
 > Sample Request
 
 ```shell
-curl https://api.thumbtack.com/v1/lead/123/message
+curl https://api.thumbtack.com/v1/partners/discoverylite/pros?category=<category>&zip_code=<zip_code>&utm_source=<utm_source>
   -H "Authorization: AUTH_HEADER"
-  -H 'Content-Type:application/json'
-  -d '{"text": "Hello John, how can I help you?"}'
+  -H "Content-Type:application/json" 
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-    "status": "success"
+   "results":[
+      {
+         "service_id":"340819324875669527",
+         "business_name":"José Daniel Ramirez Vazquez",
+         "rating":4.541666666666667,
+         "num_reviews":24,
+         "years_in_business":5,
+         "num_hires":36,
+         "thumbtack_url": "https://www.thumbtack.com/ca/el-sobrante/furniture-refinishing/jos-daniel-ramirez-vazquez/service/281762703885780102?utm_source=<partnerID>",
+         "image_url": "https://d1vg1gqh4nkuns.cloudfront.net/i/345226232596922395/desktop/standard/thumb",
+         "background_image_url": "https://production-next-images-cdn.thumbtack.com/i/323234489549873159/small/standard/hero",
+         "featured_review": "José was very thorough in his inspection of our new home.  His report was very helpful.  Thanks, Mike!",
+         "quote": {
+            "starting_cost": 15000
+         }
+      },
+      {
+         "service_id":"327730960171982897",
+         "business_name":"HandiTechGuy -Kevin Jacob",
+         "rating":4.433333333333334,
+         "num_reviews":30,
+         "years_in_business":6,
+         "num_hires":38,
+         "thumbtack_url": "https://www.thumbtack.com/ca/corte-madera/electricians/handitechguy-kevin-jacob/service/351982634073939991?utm_source=<partnerID>",
+         "image_url": "https://d1vg1gqh4nkuns.cloudfront.net/i/351984685684138006/desktop/standard/thumb",
+         "background_image_url": "https://production-next-images-cdn.thumbtack.com/i/323234489549873159/small/standard/hero",
+         "featured_review": "Kevin is the most thorough, knowledgeable and friendly home inspector. He leaves no details out and responded to my inquiries super quickly.",
+         "quote": {
+            "starting_cost": 20000
+         }
+      },
+      ...
+  ]
 }
+
 ```
 
-Send messages on behalf of the Pro to a Thumbtack customer for a given lead.
-This is an endpoint Thumbtack has created for Partners to call. Thumbtack provides both a production
-and test environment endpoint.
+This endpoint is used to fetch a list of Thumbtack Pros for a given market. Markets are defined to be the combination
+of a category and a zip code. Thumbtack will handle query translation for the Partner such that the Partner can provide
+free form text as the category and Thumbtack will convert the provided text to the corresponding Thumbtack category. 
+If a Partner does not have a query, they can directly provide the category name as the query.
+
+Parameters for the endpoint will be passed in as URL query parameters.
+
+### Parameters (passed in via URL)
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+category | string | Query string the user is searching for | Y
+zip_code | string | Zip code the user is located in | Y
+utm_source | string | Partner ID for attribution purposes | Y
+
 
 ### HTTP Endpoint (Production Environment)
 
-`POST https://api.thumbtack.com/v1/business/:businessID/lead/:leadID/message`
-
-`:businessID` is the identifier of your business.  
-`:leadID` is the identifier of the lead whose customer you wish to message.
+`GET https://api.thumbtack.com/v1/partners/discoverylite/pros?zip_code=<zip_code>&category=<category>&utm_source=<utm_source>`
 
 ### HTTP Endpoint (Test Environment)
 
-`POST https://staging-pro-api.thumbtack.com/v1/business/:businessID/lead/:leadID/message`
+`GET https://staging-pro-api.thumbtack.com/v1/partners/discoverylite/pros?zip_code=<zip_code>&category=<category>&utm_source=<utm_source>`
 
-`:businessID` is the identifier of your business.  
-`:leadID` is the identifier of the lead whose customer you wish to message.
+### Response
 
-### Expected Request Body
-
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-text | string | Text of the message | Y
-
-# Partner Endpoints
-
-Partners will expose the following endpoints to Thumbtack. 
-All endpoints should be versioned to support future schema changes. 
-Endpoints will use HTTP basic authentication, and Partners will provide 
-Thumbtack with username and password for Thumbtack to call these endpoints.
-
-## Leads
-
-> Sample Request Body
-
-```json
-{
-  "leadID": "299614694480093245",
-  "createTimestamp": "1498760294",
-  "request": {
-    "requestID": "2999842694480093245",
-    "category": "Interior Painting",
-    "title": "Interior Painting",
-    "description": "There is a stain on the door that needs to be touched up.",
-    "schedule": "Date: Tue, May 05 2020\nTime: 6:00 PM\nLength: 3.5 hours",
-    "location": {
-      "city": "San Jose",
-      "state": "CA",
-      "zipCode": "95125"
-    },
-    "travelPreferences": "Professional must travel to my address.",
-    "details": [
-      {
-        "question": "Type of property",
-        "answer": "Home"
-      },
-      {
-        "question": "Number of rooms",
-        "answer": "4 rooms"
-      }
-    ]
-  },
-  "customer": {
-    "customerID": "331138063184986319",
-    "name": "John Davis"
-  },
-  "business": {
-    "businessID": "286845156044809661",
-    "name": "Tim's Painting Business"
-  }
-}
-```
-
-> Sample Request (assuming above JSON was saved as data.json)
-
-```shell
-curl -X POST https://www.api.[partner].com/v1/lead
-    -d data.json
-    -H 'Content-Type:application/json' 
-    --user '<thumbtack_username>:<thumbtack_password>'
-```
-
-This endpoint will be called by Thumbtack to send leads to Partners.
-Leads will be coming from the Thumbtack customer to the Partner's Pro (represented as a business on Thumbtack). 
-
-### HTTP Endpoint
-
-`POST https://api.[partner].com/v1/lead`
-
-*Note that the naming of this endpoint is flexible and dictated by the Partner.*
-
-### Expected Request Body
+Thumbtack will provide a JSON response that contains the following fields.
 
 Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
-leadID | string | ID of the lead | Y
-createTimestamp | string | Unix timestamp (seconds) of when lead was created in UTC timezone | Y
-price | string | Price estimate for the job | N
-request | object | JSON request object | Y
-request.requestID | string | ID of the request | Y
-request.category | string | Category of the request | Y
-request.title | string | Title of the request | Y
-request.description | string | Description of the request | N
-request.schedule | string | Details on when the customer wants to complete the job | N
-request.location | object | JSON location object | Y
-request.location.city | string | City for the request location | Y
-request.location.state | string | State (two letter abbreviation) for the request location | Y
-request.location.zipCode | string | Zip code (five digit) for the request location | Y
-request.travelPreferences | string | Travel preferences of the customer | Y
-request.details | array | Array of details about the request | N
-request.details.[i].question | string | Request specific question about the job (see example below for clarification) | Y
-request.details.[i].answer | string | Answer to the question (see example below for clarification) | Y
-customer | object | JSON customer object | Y
-customer.customerID | string | ID of the customer | Y
-customer.name | string | Name of the customer | Y
-business | object | JSON business object | Y
-business.businessID | string | ID of the business (pro) | Y
-business.name | string | Business name | Y
+results | array | Array of Thumbtack Pros | Y
+results.service_id | string | Thumbtack ID of the Pro's business | Y
+results.business_name | string | Name of the Thumbtack Pro's business | Y
+results.rating | number | Rating (1-5 scale) of the Pro | Y
+results.num_reviews | number | Number of reviews the Pro has on Thumbtack | Y
+results.years_in_business | number | Number of years the Pro has been in business | N
+results.num_hires | number | Number of times the Pro has been hired on Thumbtack | N
+results.thumbtack_url | string | Thumbtack URL for the Pro | Y
+results.image_url | string | Image URL for the Pro's Thumbtack profile | Y
+results.background_image_url | string | Background Image URL for the Pro's Thumbtack profile | Y
+results.featured_review | string | Review text Thumbtack has chosen to highlight about the Pro | N
+results.quote | object | Information around the cost of the job | N
+results.quote.starting_cost | number | The tentative cost of the quote in cents, given that we have minimal information about the customer’s request | N
+results.quote.cost_unit | string | The unit of measurement corresponding to the starting_cost. May be temporal (“Hour”), non-temporal (“Dog”, “Session”, “Visit”, “sq ft”, etc.), or omitted if starting_cost is a flat rate | N
 
 
-## Messages
-
-> Sample Request Body
-
-```json
-{
-  "leadID": "299614694480093245",
-  "customerID": "331138063184986319",
-  "businessID": "286845156044809661",
-  "message": {
-    "messageID": "8699842694484326245",
-    "createTimestamp": "1498760294",
-    "text": "Do you offer fridge cleaning or is that extra?"
-  }
-}
-```
-
-> Sample Request (assuming above JSON was saved as data.json)
-
-```shell
-curl -X POST https://www.api.[partner].com/v1/message
-    -d data.json
-    -H 'Content-Type:application/json'
-    --user '<thumbtack_username>:<thumbtack_password>'
-```
-
-This endpoint will be called by Thumbtack to send messages to Partners.
-Messages will be coming from the Thumbtack customer to the Partner's Pro (represented as a business on Thumbtack). 
-
-### HTTP Endpoint
-
-`POST https://api.[partner].com/v1/message`
-
-*Note that the naming of this endpoint is flexible and dictated by the Partner.*
-
-### Expected Request Body
-
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-leadID | string | ID of the lead | Y
-customerID | string | ID of the customer who sent the message | Y
-businessID | string | ID of the business (pro) who is receiving the message | Y
-message | object | JSON message object | Y
-message.messageID | string | ID of the message | Y
-message.createTimestamp | string | Unix timestamp (seconds) of when message was created in UTC timezone | Y
-message.text | string | Text of the message | Y
-
-
-# Development Guide
-
-Please follow the steps outlined in this section to integrate with Thumbtack's API. 
-
-*Note that in order to call Thumbtack's test endpoints, Partners will need test credentials (username + password). 
-Please <a href='#contact-us'>contact us</a> and we will get you set up with the appropriate test credentials.*
-
-## Build Partner Endpoints
-
-The first step is to build the endpoints outlined in the <a href='#partner-endpoints'>Partner Endpoints</a> section.  
-
-Thumbtack supports both a test and production environment, so we recommend Partners to build both test and production
-endpoints as well. At a minimum, it is recommended that Partners test their endpoints by calling them (using `curl` or
-any similar tool) and validating that the endpoints return a successful `HTTP 200` response.  
-
-The purpose of this is to ensure that the Partner endpoints can accept the payloads Thumbtack will provide.
-Feel free to use the sample request bodies provided throughout this guide to simulate the payloads Thumbtack will provide.
-
-## Create Test Data on Thumbtack
-
-> Sample Response
-
-```json
-{
-    "leadID": "380497493950742534",
-    "createTimestamp": "1579643094",
-    "price": "More information needed to give an estimate",
-    "request": {
-        "requestID": "380497492346044421",
-        "category": "House Cleaning",
-        "title": "House Cleaning",
-        "description": "I am looking for someone to clean my apartment before I move",
-        "schedule": "Date: Tue, May 05 2020\nTime: 6:00 PM\nLength: 3.5 hours",
-        "location": {
-            "city": "San Francisco",
-            "state": "CA",
-            "zipCode": "94103"
-        },
-        "travelPreferences": "Professional must travel to my address"
-    },
-    "customer": {
-        "customerID": "380497491930800133",
-        "name": "John Davis"
-    },
-    "business": {
-        "businessID": "380497492389642246",
-        "name": "Mr. Clean's Sparkly Cleaning Service"
-    }
-}
-```
+## Categories
 
 > Sample Request
 
 ```shell
-curl -X POST https://staging-pro-api.thumbtack.com/v1/test/create-lead
-    -H 'Content-Type:application/json'
-    --user '<thumbtack_username>:<thumbtack_password>'
-    -d '{
-        "businessID": <business_id>
-    }'
+curl https://api.thumbtack.com/v1/partners/discoverylite/categories?zip_code=<zip_code>&utm_source=<utm_source>
+  -H "Authorization: AUTH_HEADER"
+  -H "Content-Type:application/json" 
 ```
 
-Once you have successfully created your endpoints, the next step is to test calling 
-<a href='#messages'>Thumbtack's messages endpoint.</a>.  
+> The above command returns JSON structured like this:
 
-In order to do this, you will need to provide a valid `businessID` and `leadID`. By valid, we mean the `businessID` 
-and `leadID` need to exist on Thumbtack. Thus, the Partner needs to create a dummy business and lead on Thumbtack's 
-test environment.  
+```json
+{
+   "results":[
+      {
+         "categoryName":"air_conditioning_installation_replacement",
+         "categoryDisplayName":"Central Air Conditioning Installation or Replacement",
+         "activeServices":21,
+         "url":"https://thumbtack.com/k/air-conditioner-installation/near-me?utm_source=test&utm_medium=partnership",
+         "imageURL":"https://production-next-images-cdn.thumbtack.com/i/327878539097268344/small/standard/hero",
+      },
+      {
+         "categoryName":"exterior_painting",
+         "categoryDisplayName":"Exterior Painting",
+         "activeServices":15,
+         "url":"https://thumbtack.com/k/exterior-painting/near-me?utm_source=test&utm_medium=partnership",
+         "imageURL":"https://production-next-images-cdn.thumbtack.com/i/323468071300677642/small/standard/hero",
+      },
+      ...
+  ]
+}
 
-To do this, we have provided an endpoint Partners can call to generate this dummy data.
+```
 
-### HTTP Endpoint
+This endpoint is used to fetch a list of Thumbtack Categories for a given zip code. This endpoint is useful if there
+does not yet exist a search query and the Partner merely wants to showcase the variety of categories Thumbtack 
+actively supports. 
 
-`POST https://staging-pro-api.thumbtack.com/v1/test/create-lead` 
+Parameters for the endpoint will be passed in as URL query parameters.
 
-Calling this endpoint will create a dummy business and lead on Thumbtack's test environment. 
-On the right, we've provided a sample request and response. Note that passing in the `Content-Type` header is required.
+### Parameters (passed in via URL)
 
-**Note**: For the sample request, the `businessID` field is optional (although if you have been provided a `businessID`,
-it's recommended you provide it in the request. However, if you don't have a `businessID` you must provide an empty
-data payload.
- 
-## Test Thumbtack Messaging Endpoint
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+zip_code | string | Zip code the user is located in | Y
+utm_source | string | Partner ID for attribution purposes | Y
 
-Now that you've generated dummy data on Thumbtack's test environment, you should be able to test calling Thumbtack's
-messages endpoint. 
 
-Take the `businessID` and `leadID` that were returned from calling `https://staging-pro-api.thumbtack.com/v1/test/create-lead` 
-and construct the appropriate Thumbtack messages endpoint.
+### HTTP Endpoint (Production Environment)
 
-In our case `businessID` is `380497492389642246` and `leadID` is `380497493950742534` so our Thumbtack messages endpoint
-would look like - `https://api.thumbtack.com/v1/business/380497492389642246/lead/380497493950742534/message`. 
+`GET https://api.thumbtack.com/v1/partners/discoverylite/categories?zip_code=<zip_code>&utm_source=<utm_source>`
 
-However, **because we want to run this on our test environment**, we want to use the `staging-pro-api` host instead of
-the `api` host. Thus, the endpoint we want to call would be `https://staging-pro-api.thumbtack.com/v1/business/380497492389642246/lead/380497493950742534/message`.
+### HTTP Endpoint (Test Environment)
 
-Call this endpoint as detailed in the <a href='#messages'>Thumbtack's messages endpoint</a> section, and validate
-that you get a `success` response.                  
- 
-## Go To Production
+`GET https://staging-pro-api.thumbtack.com/v1/partners/discoverylite/categories?zip_code=<zip_code>&utm_source=<utm_source>`
 
-At this point, the Partner's endpoints have been validated to accept Thumbtack payloads and the Partner has been 
-able to successfully call Thumbtack's endpoint to send a message. The next step is to move the integration to
-Production.
+### Response
 
-To do this, the Partner needs to <a href='#contact-us'>contact Thumbtack</a> to set up Production credentials 
-for the Partner's integration as well as inform Thumbtack about the Partner's endpoints. A Thumbtack representative
-will walk through the final steps to getting the Partner integrated onto the Thumbtack production environment. 
+Thumbtack will provide a JSON response that contains the following fields.
 
-Once a Partner has been fully set up on Production, Thumbtack will start pinging the Partner's endpoints
-when a Partner receives both leads and messages from Thumbtack customers. The Partner will be expected to ping
-Thumbtack's messages endpoint when they want to respond to a Thumbtack customer.
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+results | array | Array of Thumbtack categories | Y
+results.categoryName | string | Name of the category (can use this category name as the `category` query param for the aforementioned Pros endpoint) | Y
+results.categoryDisplayName | string | The category name to display to users | Y
+results.activeServices | number | Number of active Thumbtack Pros for the category and zip code (null means that we can not get the number of active services for the (category, zip code) combination) | Y
+results.url | string | Thumbtack URL for the category | Y
+results.imageURL | string | Thumbtack image URL for the category | Y
+
 
 # Contact Us
 
