@@ -39,9 +39,9 @@ Thumbtack to attribute the Partner's users to the Partner.
 ## News Break
 
 <div id="nb_images" style="display:flex; margin-right:50%">
-    <img src="images/newsbreak_categories.png" alt="News Break Categories" title="News Break Categories Example" height="370px"
+    <img src="images/newsbreak_categories.jpg" alt="News Break Categories" title="News Break Categories Example" height="370px"
         style="margin-left: auto; margin-right: 10%;"/>
-    <img src="images/newsbreak_services.png" alt="News Break Services" title="News Break Services Example" height="370px"
+    <img src="images/newsbreak_services.jpg" alt="News Break Services" title="News Break Services Example" height="370px"
         style="margin-right: auto"/>
 </div>
 
