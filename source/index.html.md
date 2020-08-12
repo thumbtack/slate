@@ -17,13 +17,13 @@ search: true
 # Introduction
 
 The purpose of this API is to enable Supply Partners to integrate Thumbtack leads into their customer
-acquisition workflows. This is accomplished by supporting two functions - **(1) lead transfer** and 
-**(2) two way messaging**. To support lead transfer, the Supply Partner will expose an API endpoint that 
-Thumbtack will call. To support two way messaging, both Thumbtack and the Supply Partner will expose 
-API endpoints for the other party to call. 
+acquisition workflows. This is accomplished by supporting two functions - **(1) lead transfer** and
+**(2) two way messaging**. To support lead transfer, the Supply Partner will expose an API endpoint that
+Thumbtack will call. To support two way messaging, both Thumbtack and the Supply Partner will expose
+API endpoints for the other party to call.
 
-**Note:** Thumbtack **does not provide customer contact information (email or phone number)** in the lead. 
-In order for the Supply Partner to contact the Thumbtack customer, the communication needs to be a 
+**Note:** Thumbtack **does not provide customer contact information (email or phone number)** in the lead.
+In order for the Supply Partner to contact the Thumbtack customer, the communication needs to be a
 message (rather than call) and the message needs to be delivered via API.
 
 Your use of an API is subject to the <a href='#api-terms-of-use'>API Terms of Use</a>.
@@ -39,7 +39,7 @@ Your use of an API is subject to the <a href='#api-terms-of-use'>API Terms of Us
 ```
 
 > Make sure to replace `AUTH_HEADER` with your personal header.
- 
+
 Where applicable, APIs use HTTP basic authentication. Thumbtack will provide Partners with a username
 and password. The basic header looks as follows:
 
@@ -74,7 +74,7 @@ This is an endpoint Thumbtack has created for Partners to call.
 
 `POST https://api.thumbtack.com/v1/business/:businessID/lead/:leadID/message`
 
-`:businessID` is the identifier of your business.  
+`:businessID` is the identifier of your business.
 `:leadID` is the identifier of the lead whose customer you wish to message.
 
 ### Expected Request Body
@@ -85,9 +85,9 @@ text | string | Text of the message | Y
 
 # Partner Endpoints
 
-Partners will expose the following endpoints to Thumbtack. 
-All endpoints should be versioned to support future schema changes. 
-Endpoints will use HTTP basic authentication, and partners will provide 
+Partners will expose the following endpoints to Thumbtack.
+All endpoints should be versioned to support future schema changes.
+Endpoints will use HTTP basic authentication, and partners will provide
 Thumbtack with username and password for Thumbtack to call these endpoints.
 
 ## Leads
@@ -137,12 +137,12 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
 ```shell
 curl -X POST https://www.api.[partner].com/v1/lead
     -d data.json
-    -H 'Content-Type:application/json' 
+    -H 'Content-Type:application/json'
     --user '<thumbtack_username>:<thumbtack_password>'
 ```
 
 This endpoint will be called by Thumbtack to send leads to Partners.
-Leads will be coming from the Thumbtack customer to the Partner's Pro (represented as a business on Thumbtack). 
+Leads will be coming from the Thumbtack customer to the Partner's Pro (represented as a business on Thumbtack).
 
 ### HTTP Endpoint
 
@@ -200,12 +200,12 @@ business.name | string | Business name | Y
 ```shell
 curl -X POST https://www.api.[partner].com/v1/message
     -d data.json
-    -H 'Content-Type:application/json' 
+    -H 'Content-Type:application/json'
     --user '<thumbtack_username>:<thumbtack_password>'
 ```
 
 This endpoint will be called by Thumbtack to send messages to Partners.
-Messages will be coming from the Thumbtack customer to the Partner's Pro (represented as a business on Thumbtack). 
+Messages will be coming from the Thumbtack customer to the Partner's Pro (represented as a business on Thumbtack).
 
 ### HTTP Endpoint
 
