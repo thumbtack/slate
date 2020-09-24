@@ -186,7 +186,7 @@ request.requestID | string | ID of the request | Y
 request.category | string | Category of the request | Y
 request.title | string | Title of the request | Y
 request.description | string | Description of the request | N
-request.schedule | string | Details on when the customer wants to complete the job | N
+request.schedule\* | string | Details on when the customer wants to complete the job | N
 request.location | object | JSON location object | Y
 request.location.city | string | City for the request location | Y
 request.location.state | string | State (two letter abbreviation) for the request location | Y
@@ -202,6 +202,16 @@ business | object | JSON business object | Y
 business.businessID | string | ID of the business (pro) | Y
 business.name | string | Business name | Y
 
+\* There are a variety of possible schedule strings. The general structure is as follows:
+
+First line – `Date` or `Dates`. This could return a full date (e.g. "Fri Apr 10 2020") or just the
+month and day (e.g. "Apr 10"). If multiple dates, then comma-separated (e.g. "Apr 10, Apr 11, Apr 12")
+
+Second line – `Time` or `Times`. This could return an exact time (e.g. "3:00 PM"), one time range
+(e.g. "Morning (9am - 12pm)"), or multiple time ranges (e.g. "Early Morning (before 9am), Morning
+(9am - 12pm), Afternoon (12pm - 3pm), Late Afternoon (3pm - 6pm)").
+
+Third line - `Length` e.g. "4 hours".
 
 ## Messages
 
