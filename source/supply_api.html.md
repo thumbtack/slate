@@ -202,7 +202,7 @@ business | object | JSON business object | Y
 business.businessID | string | ID of the business (pro) | Y
 business.name | string | Business name | Y
 
-\* There are a variety of possible schedule strings. The general structure is as follows:
+\* There are a variety of possible schedule strings. The most common structure is as follows:
 
 First line – `Date` or `Dates`. This could return a full date (e.g. "Fri Apr 10 2020") or just the
 month and day (e.g. "Apr 10"). If multiple dates, then comma-separated (e.g. "Apr 10, Apr 11, Apr 12")
@@ -241,6 +241,11 @@ curl -X POST https://www.api.[partner].com/v1/message
 
 This endpoint will be called by Thumbtack to send messages to Partners.
 Messages will be coming from the Thumbtack customer to the Partner's Pro (represented as a business on Thumbtack).
+
+Partners should return back 200 on successful processing of the messages.
+Sometimes messages might be delivered for leads that were created before the
+corresponding business was enabled in the API. In these cases, partners will not have seen
+that lead come through ProAPI before, and they should return 202.
 
 ### HTTP Endpoint
 
