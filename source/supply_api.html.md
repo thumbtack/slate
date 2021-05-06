@@ -22,10 +22,6 @@ acquisition workflows. This is accomplished by supporting two functions - **(1) 
 Thumbtack will call. To support two way messaging, both Thumbtack and the Supply Partner will expose
 API endpoints for the other party to call.
 
-**Note:** Thumbtack **does not provide customer contact information (email or phone number)** in the lead.
-In order for the Supply Partner to contact the Thumbtack customer, the communication method needs to be a
-message (rather than a call) and the message needs to be delivered via API.
-
 Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Terms of Use</a>.
 
 # Authentication
@@ -148,6 +144,8 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
   "customer": {
     "customerID": "331138063184986319",
     "name": "John Davis"
+    "email": "johndavis@gmail.com"
+    "phone": "1234567890"
   },
   "business": {
     "businessID": "286845156044809661",
@@ -198,6 +196,8 @@ request.details.[i].answer | string | Answer to the question (see example below 
 customer | object | JSON customer object | Y
 customer.customerID | string | ID of the customer | Y
 customer.name | string | Name of the customer | Y
+customer.email\*\* | string | Email address of the customer | N
+customer.phone\*\* | string | Phone number of the customer if we have it | N
 business | object | JSON business object | Y
 business.businessID | string | ID of the business (pro) | Y
 business.name | string | Business name | Y
@@ -212,6 +212,10 @@ Second line – `Time` or `Times`. This could return an exact time (e.g. "3:00 P
 (9am - 12pm), Afternoon (12pm - 3pm), Late Afternoon (3pm - 6pm)").
 
 Third line - `Length` e.g. "4 hours".
+
+\*\* Some of our partners were onboarded before we added support for these fields. We do not 
+send these fields to them without confirmation that they are ready to accept these fields. 
+If you are one such partner and want to start getting these, please get in touch with us.
 
 ## Messages
 
