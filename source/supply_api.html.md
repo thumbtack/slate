@@ -144,7 +144,6 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
   "customer": {
     "customerID": "331138063184986319",
     "name": "John Davis"
-    "email": "johndavis@gmail.com"
     "phone": "1234567890"
   },
   "business": {
@@ -196,7 +195,6 @@ request.details.[i].answer | string | Answer to the question (see example below 
 customer | object | JSON customer object | Y
 customer.customerID | string | ID of the customer | Y
 customer.name | string | Name of the customer | Y
-customer.email\*\* | string | Email address of the customer | N
 customer.phone\*\* | string | Phone number of the customer if we have it | N
 business | object | JSON business object | Y
 business.businessID | string | ID of the business (pro) | Y
