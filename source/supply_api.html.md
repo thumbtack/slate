@@ -143,7 +143,7 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
   },
   "customer": {
     "customerID": "331138063184986319",
-    "name": "John Davis"
+    "name": "John Davis",
     "phone": "1234567890"
   },
   "business": {
