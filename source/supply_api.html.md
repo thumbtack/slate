@@ -8,6 +8,7 @@ toc_footers:
   - <a href='#contact-us'>Partner with Us!</a>
 
 includes:
+  - authentication_errors
   - errors
   - terms_of_use
 
@@ -26,31 +27,144 @@ Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Te
 
 # Authentication
 
-> To authorize, use this code:
+## STEP 1: Connect Thumbtack account with Partner
+> Sample Request
 
- ```shell
- # With shell, you can just pass the correct header with each request
- curl "api_endpoint_here"
-    -H "Authorization: AUTH_HEADER"
+```
+https://thumbtack.com/services/partner-connect/?client_id=THUMBTACK%20INTERNAL&redirect_uri=http://redirect.thumbtack.com&response_type=code&scope=messages
 ```
 
-> Make sure to replace `AUTH_HEADER` with your personal header.
+Use the consumer key as a client_ID that Thumbtack provided to you to request an AuthCode. Also, include the redirect_url so that  Thumbtack knows where to redirect users after they authorize access to their data.
 
-Where applicable, APIs use HTTP basic authentication. Thumbtack will provide Partners with a username
-and password. The basic header looks as follows:
+`https://thumbtack.com/services/partner-connect/?client_id=<CLIENT_ID>&redirect_uri=<REDIRECT_URL>&response_type=code&scope=<SCOPE>`
 
-`Authorization: Basic <encoding>`
+### Expected Parameters in the URL
 
-`<encoding>` is the base64 encoding of the username followed by a colon, followed by password.
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+client_id | string | Consumer key provided by Thumbtack | Y
+scope | string | Authorization scopes allow to access specific information from Thumbtack. Pass “messages” here | Y
+redirect_uri | string | Thumbtack redirects Pro to this URL after they authorization | N
+response_type | string | Must contain string `code` as a response type | Y
 
-Thumbtack will provide Partners with two sets of credentials - one for Thumbtack's test environment and
-one for Thumbtack's production environment.
+## STEP 2: Pro Authorizes Partner
 
-Note that `curl` provides a way to pass in `<username>` and `<password>` like so:
-`--user '<thumbtack_username>:<thumbtack_password>'`. This is an acceptable alternative to providing the credentials
-as an Authorization header. Feel free to read up on
-<a href='https://en.wikipedia.org/wiki/Basic_access_authentication'>Basic Auth</a> to understand the relationship
-between username/password and the encoded Authorization header.
+Pro can select Thumbtack Business name from the dropdown and click on the “Confirm Connection” button to Authorize that partner.
+
+![image info](images/authcode.png)
+
+## STEP 3: Authorization Code
+> Sample redirect URL when Redirect URL is https://redirect.thumbtack.com
+
+```
+https://redirect.thumbtack.com/?code=BnCICCQ9KWF6WXj_xtiN3A
+```
+
+If Pro confirms the connection, Thumbtack redirects the pro to a third-party URL with the authorization code in the URL. Redirection URL will look like below:
+
+`<REDIRECT_URL>/?code=<AUTHORIZATION_CODE>&scope=messages
+`
+
+### Expected Parameters in the URL
+Parameter | Type | Description 
+--------- | ---- | ----------- 
+code | string | Authorization code appended to redirect_url in the previous step
+
+Grab the Authorization Code and follow the below steps to get the Access Token.
+
+## STEP 4: Request Access Token
+
+> Sample Authorization Header
+
+```
+Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK=
+```
+
+> Sample Request
+
+```shell
+curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?grant_type=authorization_code&code=BnCICCQ9KWF6WXj_xtiN3A&redirect_uri=http://redirect.thumbtack.com&token_type=AUTH_CODE' \
+--header 'Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK='
+```
+
+> Sample Response
+
+```
+{
+   "access_token": "1.eyJCdXNpbmVzc1BLIjozODgwMDYwNjczNTExNTA1OTUsIkNsaWVudElEIjoiVEhVTUJUQUNLIElOVEVSTkFMIiwiU2NvcGUiOlsibWVzc2FnZXMiXSwiRXhwaXJlc0F0IjoiMjAyMS0xMC0xNFQwMjo1OToyOS44MjIwMDU2ODhaIiwiU3JjQXV0aENvZGUiOiIwNjcwODgwODI0M2QyOTYxN2E1OTc4ZmZjNmQ4OGRkY2UzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ.qJDfeuYfdFZCSVQmBUgr_kDoZeeEUD4y4oVTVMEc4EQ",
+   "token_type": "bearer",
+   "expires_in": 3599176991073,
+   "refresh_token": "_s3cnwGAb5VgBt-CmYFSOw"
+}
+```
+
+Once the pro authorizes access, the user is redirected back to the URL with the authorization code. This API will use authorization code in request return access token and refresh token in response.
+
+### Request Endpoint
+
+`POST https://pro-api.thumbtack.com/v2/tokens/access`
+
+### Request Header
+
+`Authorization: Basic <B64-encoded_oauth_credentials>`
+
+The `Authorization: Basic` authorization header is generated through a Base64 encoding of `<client_id>:<client_secret>`.
+You can use https://www.base64encode.org/ to see how headers should be encoded.
+
+### Expected Request Params
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+grant_type | string | Must contain string `authorization_code` as a grant type | Y
+code | string | Authorization code appended to redirect_url in the step-3 | Y
+redirect_uri | string | Thumbtack redirects Pro to this URL after they authorization | Y
+token_type | string | Must contain string `AUTH_CODE` as a token type | Y
+
+## STEP 5: Refresh Access Token
+
+> Sample Authorization Header
+
+```
+Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK=
+```
+
+> Sample Request 
+
+```shell
+curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?grant_type=refresh_token&refresh_token=zRw4chXenfjNLenO2_lVOQ&token_type=REFRESH' \
+--header 'Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK='
+```
+
+> Sample Response
+
+```
+{
+   "access_token": "1.eyJCdXNpbmVzc1BLIjozMTQxNDgwOTYyOTIxODQyNDMsIkNsaWVudElEIjoiVEhVTUJUQUNLIElOVEVSTkFMIiwiU2NvcGUiOltdLCJFeHBpcmVzQXQiOiIyMDIxLTEwLTE0VDAyOjQ1OjA2LjI4NjUwNzkxOFoiLCJTcmNBdXRoQ29kZSI6ImIzYzUzNjk3ZGU0ZTlmNWQxNTk2NDhmMGM2MTc3YWRhZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9.tgDkhV1ooM1C7UjWhZ_mCXbzF11YH4NgsweJdfvG-f8",
+   "token_type": "bearer",
+   "expires_in": 3599711451836,
+   "refresh_token": "eoZNGASGdTWop1jINi-ouQ"
+}
+```
+
+When Access Token expires, use the below API with refresh token which has a long lifetime, to get a new access token and refresh token pair.
+### Request Endpoint
+
+`POST https://pro-api.thumbtack.com/v2/tokens/access`
+
+### Request Header
+
+`Authorization: Basic <B64-encoded_oauth_credentials>`
+
+The `Authorization: Basic` authorization header is generated through a Base64 encoding of `<client_id>:<client_secret>`.
+You can use https://www.base64encode.org/ to see how headers should be encoded.
+
+### Expected Request Params
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+grant_type | string | Must contain string `refresh_token` as a grant type | Y
+refresh_token | string | Refresh Token value that you received along with the access token in step:4 | Y
+token_type | string | Must contain string `REFRESH` as a token type | Y
 
 # Thumbtack Endpoints
 
@@ -62,16 +176,22 @@ Note that passing in the `Content-Type` header is required.
 
 ## Messages
 
+> Sample Authorization Header
+
+```
+Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjozOTUwMjMyMDc2MTEwMjMzNzIsIkNsaWVudElEIjoicHJvbmV4aSIsIlNjb3BlIjpbIm1lc3NhZ2VzIl0sIkV4cGlyZXNBdCI6IjIwMjEtMTAtMjJUMjI6MTM6MDMuNDMwMTMwNzQ4WiIsIlNyY0F1dGhDb2RlIjoiNGJlOTFjNTIyN2RmOGIxNTdjNjZlMTlkOGRhMjI0ZTRlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiQWNjb3VudElEIjozMDczMDYyNDIwMTgzOTQzMTZ9.CyNhsuC0JQDM9zNrpjduD7Ja_qLbQw51bq_H7Ry39C4
+```
+
 > Sample Request
 
 ```shell
-curl https://api.thumbtack.com/v1/lead/123/message
-  -H "Authorization: AUTH_HEADER"
-  -H 'Content-Type:application/json'
-  -d '{"text": "Hello John, how can I help you?"}'
+curl --location --request POST 'https://api.thumbtack.com/v2/business/395023207611023372/lead/123/message' \
+--header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjozOTUwMjMyMDc2MTEwMjMzNzIsIkNsaWVudElEIjoicHJvbmV4aSIsIlNjb3BlIjpbIm1lc3NhZ2VzIl0sIkV4cGlyZXNBdCI6IjIwMjEtMTAtMjJUMjI6MTM6MDMuNDMwMTMwNzQ4WiIsIlNyY0F1dGhDb2RlIjoiNGJlOTFjNTIyN2RmOGIxNTdjNjZlMTlkOGRhMjI0ZTRlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiQWNjb3VudElEIjozMDczMDYyNDIwMTgzOTQzMTZ9.CyNhsuC0JQDM9zNrpjduD7Ja_qLbQw51bq_H7Ry39C4' \
+--header 'Content-Type: application/json' \
+--data-raw '{"text": "Hello, how can I help you?"}'
 ```
 
-> The above command returns JSON structured like this:
+> Sample Response
 
 ```json
 {
@@ -83,25 +203,109 @@ Send messages on behalf of the Pro to a Thumbtack customer for a given lead.
 This is an endpoint Thumbtack has created for Partners to call. Thumbtack provides both a production
 and test environment endpoint.
 
-### HTTP Endpoint (Production Environment)
-
-`POST https://api.thumbtack.com/v1/business/:businessID/lead/:leadID/message`
+### Request Endpoint (Production Environment)
+`POST https://pro-api.thumbtack.com/v2/business/{BusinessID}/lead/{leadID}/message`
 
 `:businessID` is the identifier of your business.
 `:leadID` is the identifier of the lead whose customer you wish to message.
 
 ### HTTP Endpoint (Test Environment)
-
-`POST https://staging-pro-api.thumbtack.com/v1/business/:businessID/lead/:leadID/message`
+`POST https://staging-pro-api.thumbtack.com/v2/business/{BusinessID}/lead/{leadID}/message`
 
 `:businessID` is the identifier of your business.
 `:leadID` is the identifier of the lead whose customer you wish to message.
+
+### Request Header
+`Authorization: Bearer <access_token>`
+
+`access_token` is the value that you received along with the `/token/access API`.
 
 ### Expected Request Body
 
 Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 text | string | Text of the message | Y
+
+## Thumbtack Info
+
+> Sample Authorization Header
+
+```
+Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjozOTUwMjMyMDc2MTEwMjMzNzIsIkNsaWVudElEIjoicHJvbmV4aSIsIlNjb3BlIjpbIm1lc3NhZ2VzIl0sIkV4cGlyZXNBdCI6IjIwMjEtMTAtMjJUMjI6MTM6MDMuNDMwMTMwNzQ4WiIsIlNyY0F1dGhDb2RlIjoiNGJlOTFjNTIyN2RmOGIxNTdjNjZlMTlkOGRhMjI0ZTRlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiQWNjb3VudElEIjozMDczMDYyNDIwMTgzOTQzMTZ9.CyNhsuC0JQDM9zNrpjduD7Ja_qLbQw51bq_H7Ry39C4
+```
+
+> Sample Request
+
+```shell
+curl --location --request GET 'https://pro-api.thumbtack.com/v2/get-thumbtack-info' \
+--header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjozMTQxNDgwOTYyOTIxODQyNDMsIkNsaWVudElEIjoiODJNUlY1MmFGSXUwU0ZZTEpPM3NzcHg3aGF3RjVaZXozdVJTVkNRMCtsST0iLCJTY29wZSI6WyJtZXNzYWdlcyJdLCJFeHBpcmVzQXQiOiIyMDIxLTExLTEyVDIyOjE0OjU3Ljc3MzI5NTgyM1oiLCJTcmNBdXRoQ29kZSI6IjE2NDE1OWY1MDk2YzgxZTRiNzA5ODY4MjJjYWI3MWQzZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsIkFjY291bnRJRCI6MzgxMzU1NTEwMjM1Mjc1Mjc0fQ.IXT9OXvHO43u7Z4SZPjNtbQ_hipMIAbNI7GmpmvobUE' \
+--header 'Content-Type: application/json'
+```
+
+> Sample Response
+
+```json
+{
+  "business_pk": 388006067351150595,
+  "client_id": "THUMBTACK INTERNAL",
+  "scope": [
+    "messages"
+  ]
+}
+```
+
+Return thumbtack information by parsing the access_token value that you received along with the /token API.
+
+### HTTP Endpoint
+`POST https://pro-api.thumbtack.com/v2/disconnect-partner`
+
+### Request Header
+
+`Authorization: Basic <B64-encoded_oauth_credentials>`
+
+The `Authorization: Basic` authorization header is generated through a Base64 encoding of `<client_id>:<client_secret>`.
+You can use https://www.base64encode.org/ to see how headers should be encoded.
+
+## Disconnect from OAuth Flow
+<span style="color:red">THIS API IS ONLY FOR TESTING PURPOSE</span>
+
+Removes tokens and disables the service on Thumbtack side so which will allow partner/pro to retrigger the OAuth initialization flow.
+
+> Sample Authorization Header
+
+```
+Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK=
+```
+
+> Sample Request
+
+```shell
+curl --location --request POST 'https://pro-api.thumbtack.com/v2/disconnect-partner?business_pk=432428213655306241' \
+--header 'Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK='
+
+```
+
+> Sample Response
+
+```
+200 OK - {}
+```
+
+Return thumbtack information by parsing the access_token value that you received along with the /token API.
+
+### HTTP Endpoint
+`GET https://pro-api.thumbtack.com/v2/get-thumbtack-info`
+
+### Request Header
+`Authorization: Bearer <access_token>`
+
+`access_token` is the value that you received along with the `/token/access API`.
+
+### Expected Request Params
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+business_pk | string | business_pk that you can get via `/get-thumbtack-info` API | Y
 
 # Partner Endpoints
 
