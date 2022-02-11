@@ -3,7 +3,7 @@
 The Thumbtack API uses the following error codes:
 
 
-Error Code | Meaning
+Error Code | Description
 ---------- | -------
 400 | Bad Request -- Something about your request was invalid or malformed.
 401 | Unauthorized -- Your API key is wrong.
