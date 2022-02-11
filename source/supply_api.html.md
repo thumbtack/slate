@@ -28,7 +28,7 @@ Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Te
 # Authentication
 
 ## STEP 1: Connect Thumbtack account with Partner
-> Sample Request
+> Sample URL
 
 ```
 https://thumbtack.com/services/partner-connect/?client_id=THUMBTACK%20INTERNAL&redirect_uri=http://redirect.thumbtack.com&response_type=code&scope=messages
@@ -46,6 +46,7 @@ client_id | string | Consumer key provided by Thumbtack | Y
 scope | string | Authorization scopes allow to access specific information from Thumbtack. Pass “messages” here | Y
 redirect_uri | string | Thumbtack redirects Pro to this URL after they authorization | N
 response_type | string | Must contain string `code` as a response type | Y
+state | string | Client can insert state information that will be appended to the redirect_uri upon success user authorization | N
 
 ## STEP 2: Pro Authorizes Partner
 
@@ -54,16 +55,23 @@ Pro can select Thumbtack Business name from the dropdown and click on the “Con
 ![image info](images/authcode.png)
 
 ## STEP 3: Authorization Code
-> Sample redirect URL when Redirect URL is https://redirect.thumbtack.com
+> Sample URL when Redirect URL is https://redirect.thumbtack.com
 
 ```
 https://redirect.thumbtack.com/?code=BnCICCQ9KWF6WXj_xtiN3A
 ```
 
-If Pro confirms the connection, Thumbtack redirects the pro to a third-party URL with the authorization code in the URL. Redirection URL will look like below:
+After confirms the connection, There are two ways client will receive auth-code:
+
+* If client send `redirect_uri` in the URL(step-1), then Thumbtack redirects the pro to a third-party URL with the authorization code in the URL. Redirection URL will look like below:
 
 `<REDIRECT_URL>/?code=<AUTHORIZATION_CODE>&scope=messages
 `
+
+* If Client does not send `redirect_uri` in the URL(step-1), then client will see auth code like below.
+
+![image info](images/authcode_2.png)
+
 
 ### Expected Parameters in the URL
 Parameter | Type | Description 
@@ -117,7 +125,7 @@ Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 grant_type | string | Must contain string `authorization_code` as a grant type | Y
 code | string | Authorization code appended to redirect_url in the step-3 | Y
-redirect_uri | string | Thumbtack redirects Pro to this URL after they authorization | Y
+redirect_uri | string | Thumbtack redirected to this URL after they authorization | Y
 token_type | string | Must contain string `AUTH_CODE` as a token type | Y
 
 ## STEP 5: Refresh Access Token
@@ -257,20 +265,15 @@ curl --location --request GET 'https://pro-api.thumbtack.com/v2/get-thumbtack-in
 Return thumbtack information by parsing the access_token value that you received along with the /token API.
 
 ### HTTP Endpoint
-`POST https://pro-api.thumbtack.com/v2/disconnect-partner`
+`GET https://pro-api.thumbtack.com/v2/get-thumbtack-info`
 
 ### Request Header
 
-`Authorization: Basic <B64-encoded_oauth_credentials>`
+`Authorization: Bearer <access_token>`
 
-The `Authorization: Basic` authorization header is generated through a Base64 encoding of `<client_id>:<client_secret>`.
-You can use https://www.base64encode.org/ to see how headers should be encoded.
+`access_token` is the value that you received along with the `/token/access API`.
 
 ## Disconnect from OAuth Flow
-<span style="color:red">THIS API IS ONLY FOR TESTING PURPOSE</span>
-
-Removes tokens and disables the service on Thumbtack side so which will allow partner/pro to retrigger the OAuth initialization flow.
-
 > Sample Authorization Header
 
 ```
@@ -291,15 +294,19 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/disconnect-part
 200 OK - {}
 ```
 
-Return thumbtack information by parsing the access_token value that you received along with the /token API.
+<span style="color:red">THIS API IS ONLY FOR TESTING PURPOSE</span>
+
+Removes tokens and disables the service on Thumbtack side so which will allow partner/pro to retrigger the OAuth initialization flow.
 
 ### HTTP Endpoint
-`GET https://pro-api.thumbtack.com/v2/get-thumbtack-info`
+`POST https://pro-api.thumbtack.com/v2/disconnect-partner`
 
 ### Request Header
-`Authorization: Bearer <access_token>`
 
-`access_token` is the value that you received along with the `/token/access API`.
+`Authorization: Basic <B64-encoded_oauth_credentials>`
+
+The `Authorization: Basic` authorization header is generated through a Base64 encoding of `<client_id>:<client_secret>`.
+You can use https://www.base64encode.org/ to see how headers should be encoded.
 
 ### Expected Request Params
 
