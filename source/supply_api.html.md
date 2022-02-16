@@ -428,6 +428,26 @@ Third line - `Length` e.g. "4 hours".
 send these fields to them without confirmation that they are ready to accept these fields. 
 If you are one such partner and want to start getting these, please get in touch with us.
 
+### Lead Type Values
+
+Possible values for the `leadType` field are mentioned below:
+
+Lead Types |
+--------- |
+AVAILABILITY |
+CONTACT |
+ESTIMATION | 
+CALL |
+BOOKING |
+PHONE_CONSULTATION |
+INSTANT_BOOK |
+SPONSORED |
+INSTANT_CONSULT |
+SERVICE_CALL |
+FULFILLMENT |
+REQUEST_A_QUOTE |
+MISMATCH_REQUEST_A_QUOTE |
+
 ## Messages
 
 > Sample Request Body
