@@ -254,7 +254,7 @@ curl --location --request GET 'https://pro-api.thumbtack.com/v2/get-thumbtack-in
 
 ```json
 {
-  "business_pk": 388006067351150595,
+  "business_pk": "388006067351150595",
   "client_id": "THUMBTACK INTERNAL",
   "scope": [
     "messages"
