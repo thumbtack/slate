@@ -102,7 +102,18 @@ curl https://api.thumbtack.com/v1/partners/discoverylite/pros?category=<category
          "featured_review": "José was very thorough in his inspection of our new home.  His report was very helpful.  Thanks, Mike!",
          "quote": {
             "starting_cost": 15000
-         }
+         },
+        "introduction": "We opened our services a few years ago and strive to deliver only the best experience and quality for our clients.",
+        "pills": [
+          "licensed",
+          "remote",
+          "popular"
+        ],
+        "location": "Mountain View, CA",
+        "similar_jobs_done": 6,
+        "license_verified": true,
+        "num_of_employees": 2,
+        "has_background_check": true
       },
       {
          "service_id":"327730960171982897",
@@ -117,7 +128,16 @@ curl https://api.thumbtack.com/v1/partners/discoverylite/pros?category=<category
          "featured_review": "Kevin is the most thorough, knowledgeable and friendly home inspector. He leaves no details out and responded to my inquiries super quickly.",
          "quote": {
             "starting_cost": 20000
-         }
+         },
+        "introduction": "Efficient and professional cleaning.  Attentive to customer needs and their peculiarities. \nPet friendly 🐶🐱 Eco-friendly 🍀🌳",
+        "pills": [
+          "low_price",
+          "remote",
+          "popular"
+        ],
+        "location": "Mountain View, CA",
+        "num_of_employees": 3,
+        "has_background_check": true
       },
       ...
   ]
@@ -169,7 +189,25 @@ results.featured_review | string | Review text Thumbtack has chosen to highlight
 results.quote | object | Information around the cost of the job | N
 results.quote.starting_cost | number | The tentative cost of the quote in cents, given that we have minimal information about the customer’s request | N
 results.quote.cost_unit | string | The unit of measurement corresponding to the starting_cost. May be temporal (“Hour”), non-temporal (“Dog”, “Session”, “Visit”, “sq ft”, etc.), or omitted if starting_cost is a flat rate | N
+results.introduction | string | Introduction of the Thumbtack Pro's business | Y
+results.ProfilePill | array | Profile pills for the Thumbtack Pro's business | Y
+results.location | string | Location of the Thumbtack Pro's business | N
+results.is_top_pro | boolean | Is Thumbtack Pro is top pro or not? | N
+results.similar_jobs_done | number | Number if similar jobs done by Thumbtack Pro's | N
+results.license_verified | boolean | Is licence verified for the Thumbtack Pro's business? | N
+results.num_of_employees | number | Number of employees in the Thumbtack Pro's business | N
+results.has_background_check | boolean | Has background check is done for the Thumbtack Pro's business? | N
 
+### Profile Pills
+Profile pill name are converted into label on the Thumbtack website. 
+Below table shows the profile pill to label mapping.
+
+Profile Pill Name | Label 
+----------------- | -------
+popular | In high demand 
+remote | Offers remote services 
+licensed | Licensed pro 
+low_price | Great Value 
 
 ## Categories
 
