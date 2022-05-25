@@ -80,6 +80,8 @@ code | string | Authorization code appended to redirect_url in the previous step
 
 Grab the Authorization Code and follow the below steps to get the Access Token.
 
+<span style="color:Green">***Auth code expiry time - 5 minutes***</span>
+
 ## STEP 4: Request Access Token
 
 > Sample Authorization Header
@@ -101,7 +103,7 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?g
 {
    "access_token": "1.eyJCdXNpbmVzc1BLIjozODgwMDYwNjczNTExNTA1OTUsIkNsaWVudElEIjoiVEhVTUJUQUNLIElOVEVSTkFMIiwiU2NvcGUiOlsibWVzc2FnZXMiXSwiRXhwaXJlc0F0IjoiMjAyMS0xMC0xNFQwMjo1OToyOS44MjIwMDU2ODhaIiwiU3JjQXV0aENvZGUiOiIwNjcwODgwODI0M2QyOTYxN2E1OTc4ZmZjNmQ4OGRkY2UzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ.qJDfeuYfdFZCSVQmBUgr_kDoZeeEUD4y4oVTVMEc4EQ",
    "token_type": "bearer",
-   "expires_in": 3599176991073,
+   "expires_in": 3600,
    "refresh_token": "_s3cnwGAb5VgBt-CmYFSOw"
 }
 ```
@@ -128,6 +130,19 @@ code | string | Authorization code appended to redirect_url in the step-3 | Y
 redirect_uri | string | Thumbtack redirected to this URL after they authorization | Y
 token_type | string | Must contain string `AUTH_CODE` as a token type | Y
 
+### Expected Response Params
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+access_token | string | The access token issued by the authorization server | Y
+token_type | string | Type of the token issued. Must return `bearer` as a token type | Y
+expires_in | number | Access Token lifetime in seconds. Default expiry is `3600` seconds (1 hour).  | Y
+refresh_token | string | The refresh token issued by the authorization server | Y
+
+<span style="color:Green">***Access Token expiry time - 1 hour***</span>
+
+<span style="color:Green">***Refresh Token expiry time - 720 hours***</span>
+
 ## STEP 5: Refresh Access Token
 
 > Sample Authorization Header
@@ -149,7 +164,7 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?g
 {
    "access_token": "1.eyJCdXNpbmVzc1BLIjozMTQxNDgwOTYyOTIxODQyNDMsIkNsaWVudElEIjoiVEhVTUJUQUNLIElOVEVSTkFMIiwiU2NvcGUiOltdLCJFeHBpcmVzQXQiOiIyMDIxLTEwLTE0VDAyOjQ1OjA2LjI4NjUwNzkxOFoiLCJTcmNBdXRoQ29kZSI6ImIzYzUzNjk3ZGU0ZTlmNWQxNTk2NDhmMGM2MTc3YWRhZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9.tgDkhV1ooM1C7UjWhZ_mCXbzF11YH4NgsweJdfvG-f8",
    "token_type": "bearer",
-   "expires_in": 3599711451836,
+   "expires_in": 3600,
    "refresh_token": "eoZNGASGdTWop1jINi-ouQ"
 }
 ```
@@ -173,6 +188,15 @@ Parameter | Type | Description | Required
 grant_type | string | Must contain string `refresh_token` as a grant type | Y
 refresh_token | string | Refresh Token value that you received along with the access token in step:4 | Y
 token_type | string | Must contain string `REFRESH` as a token type | Y
+
+### Expected Response Params
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+access_token | string | The access token issued by the authorization server | Y
+token_type | string | Type of the token issued. Must return `bearer` as a token type | Y
+expires_in | number | Access Token lifetime in seconds. Default expiry is `3600` seconds (1 hour).  | Y
+refresh_token | string | The refresh token issued by the authorization server | Y
 
 # Thumbtack Endpoints
 
