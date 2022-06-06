@@ -198,6 +198,12 @@ token_type | string | Type of the token issued. Must return `bearer` as a token 
 expires_in | number | Access Token lifetime in seconds. Default expiry is `3600` seconds (1 hour).  | Y
 refresh_token | string | The refresh token issued by the authorization server | Y
 
+### Error handling with grace period 
+We have implemented a grace period logic in OAuth refresh token flow to handle Network errors, Time-out errors or similar one.
+If you receive `null` in the response to `/tokens/access` API at the time of refreshing the token,
+we encourage Partners to implement the retry logic on their side which will call `/tokens/access` API with same refresh token to get the valid response.
+<span style="color:Green">***Grace period time - 10 sec***</span>
+
 # Thumbtack Endpoints
 
 Thumbtack will expose the following endpoints to Partners.
@@ -282,7 +288,8 @@ curl --location --request GET 'https://pro-api.thumbtack.com/v2/get-thumbtack-in
   "client_id": "THUMBTACK INTERNAL",
   "scope": [
     "messages"
-  ]
+  ],
+  "business_name": "cleaner business"
 }
 ```
 
@@ -296,6 +303,15 @@ Return thumbtack information by parsing the access_token value that you received
 `Authorization: Bearer <access_token>`
 
 `access_token` is the value that you received along with the `/token/access API`.
+
+### Expected Response Params
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+business_pk | string | Business PK related to the access token. | Y
+client_id | string | Consumer key provided by Thumbtack which related to the access token. | Y
+scope | array | Authorization scopes allow to access specific information from Thumbtack.  | Y
+business_name | string | Business Name related to the access token. | Y
 
 ## Disconnect from OAuth Flow
 > Sample Authorization Header
@@ -314,8 +330,11 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/disconnect-part
 
 > Sample Response
 
-```
-200 OK - {}
+```json
+{
+  "business_pk": "432428213655306241",
+  "client_id": "THUMBTACK INTERNAL"
+}
 ```
 
 <span style="color:red">THIS API IS ONLY FOR TESTING PURPOSE</span>
@@ -337,6 +356,13 @@ You can use https://www.base64encode.org/ to see how headers should be encoded.
 Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 business_pk | string | business_pk that you can get via `/get-thumbtack-info` API | Y
+
+### Expected Response Params
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+business_pk | string | Business PK | Y
+client_id | string | Consumer key provided by Thumbtack related to the business. | Y
 
 # Partner Endpoints
 
