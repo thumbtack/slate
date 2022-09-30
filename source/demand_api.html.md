@@ -81,6 +81,10 @@ Partners with username and password for Partners to call these endpoints.
 ```shell
 curl https://api.thumbtack.com/v1/partners/discoverylite/pros?category=<category>&zip_code=<zip_code>&utm_source=<utm_source>
   -H "Authorization: AUTH_HEADER"
+  -H "Content-Type:application/json"   
+OR 
+ curl https://api.thumbtack.com/v1/partners/discoverylite/pros?category_pk=<category_pk>&zip_code=<zip_code>&utm_source=<utm_source>
+  -H "Authorization: AUTH_HEADER"
   -H "Content-Type:application/json" 
 ```
 
@@ -156,9 +160,15 @@ Parameters for the endpoint will be passed in as URL query parameters.
 
 Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
-category | string | Query string the user is searching for | Y
+category | string | Query string the user is searching for | N
+category_pk | string | PK of the category that you received as a part of homecare/checklist API  | N
 zip_code | string | Zip code the user is located in | Y
 utm_source | string | Partner ID for attribution purposes | Y
+
+**Note:**
+In each request atlas one category specific parameter should be available. Either category or category_pk.
+* If you are using /category API then pass a category with valid value in request.
+* If you are using /homecare/checklist API then pass category_pk with valid PK in the request.
 
 
 ### HTTP Endpoint (Production Environment)
@@ -279,6 +289,117 @@ results.activeServices | number | Number of active Thumbtack Pros for the catego
 results.url | string | Thumbtack URL for the category | Y
 results.imageURL | string | Thumbtack image URL for the category | Y
 
+## Homecare/checklist
+
+> Sample Request
+
+```shell
+curl --location --request GET 'https://pro-api.thumbtack.com/v1/partners/discoverylite/homecare/checklist?zip_code=96061&property_type=single_family_home&utm_source=cma-foxy'
+  -H 'Authorization: AUTH_HEADER'
+  -H "Content-Type:application/json" 
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "results": [
+    {
+      "taskDetails": {
+        "title": "Clean gutters",
+        "description": "Clogged gutters can lead to major flooding and damage that come at a high cost for homeowners. Routine upkeep can be vital in redirecting water away from your home, which helps prevent leaks, damage to your roof or water accumulating against your foundation. \n\nNeglecting to clean out your gutters can lead to a host of issues including basement flooding, overflow coming through your roofing and in cold climates ice damming, which can cause damage and even more leaks. These are issues that generally stem from more than one season of neglect, but should be taken seriously as any flooding or leak damage can cost thousands.",
+        "tagline": "PREVENTS_FLOODING",
+        "avgCost": {
+          "max": 300,
+          "min": 100
+        }
+      },
+      "categoryPK": "124317070955717033",
+      "taskPK": "422486850908987417",
+      "categoryName": "gutter cleaners",
+      "categoryDisplayName": "Gutter Cleaning and Maintenance",
+      "activeServices": null,
+      "url": "https://d.thumbtack.com/k/gutter-cleaners/near-me?utm_source=cma-foxy&utm_medium=partnership",
+      "imageURL": "https://staging-next-images-cdn.thumbtack.com/i/323234414494916677/small/standard/hero"
+    },
+    {
+      "taskDetails": {
+        "title": "Overseed and aerate lawn",
+        "description": "Getting a beautiful lawn next year means doing some work now. Aerating allows nutrients to penetrate the soil, which enhances seed germination. Overseeding will also improve the coverage and thickness of the lawn while also reducing weeds.",
+        "tagline": "IMPROVES_YOUR_HOME",
+        "avgCost": {
+          "max": 80,
+          "min": 40
+        }
+      },
+      "categoryPK": "240123621172183344",
+      "taskPK": "422486850926174234",
+      "categoryName": "lawn care",
+      "categoryDisplayName": "Full Service Lawn Care",
+      "activeServices": null,
+      "url": "https://d.thumbtack.com/k/lawn-care/near-me?utm_source=cma-foxy&utm_medium=partnership",
+      "imageURL": "https://staging-next-images-cdn.thumbtack.com/i/323632148692721733/small/standard/hero"
+    },
+    …
+  ]
+}
+```
+
+This endpoint is used to fetch a list of Thumbtack Categories and Task Details for a given zip code and property type. 
+This endpoint is useful if there does not yet exist a search query and the 
+Partner merely wants to showcase the variety of categories Thumbtack actively supports.
+
+Parameters for the endpoint will be passed in as URL query parameters.
+
+### Parameters (passed in via URL)
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+zip_code | string | Zip code the user is located in | Y
+property_type | string | Pass valid property type from the list provided below. | Y
+utm_source | string | Partner ID for attribution purposes | Y
+
+#### PROPERTY TYPES:
+* UNKNOWN
+* APARTMENT
+* SINGLE_FAMILY_HOME
+* COMMERCIAL
+* TOWNHOUSE
+* MULTI_FAMILY
+* OTHER
+
+### HTTP Endpoint (Production Environment)
+
+`GET https://pro-api.thumbtack.com/v1/partners/discoverylite/homecare/checklist?zip_code=<zip_code>&utm_source=<utm_source>&property_type=<property_type>`
+
+### HTTP Endpoint (Test Environment)
+
+`GET https://staging-pro-api.thumbtack.com/v1/partners/discoverylite/homecare/checklist?zip_code=<zip_code>&utm_source=<utm_source>&property_type=<property_type>`
+
+### Response
+
+Thumbtack will provide a JSON response that contains the following fields.
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+results | array | Array of Thumbtack categories | Y
+results.taskDetails | object | Task details json block | Y
+results.taskDetails.title | string | Title of the task | Y
+results.taskDetails.description | string | Description of the task | Y
+results.taskDetails.tagline | string | Tagline of the task | Y
+results.taskDetails.avgCost | json | Cost json block of the task | Y
+results.taskDetails.avgCost.max | number | Maximum cost of the task | Y
+results.taskDetails.avgCost.min | number | Minimum cost of the task | Y
+results.categoryPK | string | PK of the category (can use this category_pk as the category query param for the aforementioned Pros endpoint) | Y
+result.taskPK | string | PK of the task | Y
+results.categoryName | string | Name of the category (can use this category name as the `category` query param for the aforementioned Pros endpoint) | Y
+results.categoryDisplayName | string | The category name to display to users | Y
+results.activeServices | number | Number of active Thumbtack Pros for the category and zip code (null means that we can not get the number of active services for the (category, zip code) combination) | Y
+results.url | string | Thumbtack URL for the category | Y
+results.imageURL | string | Thumbtack image URL for the category | Y
+
+#### Response Size
+10 categories in result
 
 # Contact Us
 
