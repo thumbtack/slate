@@ -583,7 +583,6 @@ curl -X PUT https://www.api.[partner].com/v1/lead/update
 ```
 
 This endpoint will be called by Thumbtack to update the lead payload to Partners.
-Leads will be coming from the Thumbtack customer to the Partner's Pro (represented as a business on Thumbtack).
 Currently, lead price generated after generating the leads, so Thumbtack need new update lead API for sending updated payload to any Partner.
 
 This update lead endpoint should be `PUT`.
