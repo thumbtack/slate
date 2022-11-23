@@ -411,7 +411,9 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
     "businessID": "286845156044809661",
     "name": "Tim's Painting Business"
   },
-  "leadType": "ESTIMATION"
+  "leadType": "ESTIMATION",
+  "leadPrice": null,
+  "chargeState": null
 }
 ```
 
@@ -462,6 +464,8 @@ business.businessID | string | ID of the business (pro) | Y
 business.name | string | Business name | Y
 price | string | Price estimate for the job | N
 leadType | string | Type of lead that Thumbtack is sending | N
+leadPrice | string | Estimated price that Pro will pay it to Thumbtack | N
+chargeState | string | leadPrice Charge state value | N 
 
 \* There are a variety of possible schedule strings. The most common structure is as follows:
 
@@ -497,6 +501,13 @@ SERVICE_CALL |
 FULFILLMENT |
 REQUEST_A_QUOTE |
 MISMATCH_REQUEST_A_QUOTE |
+
+### ChargeState Values
+
+When `leadPrice` is null, you will get `chargeState` as null.
+
+When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
+
 
 ## Messages
 
@@ -549,6 +560,52 @@ message | object | JSON message object | Y
 message.messageID | string | ID of the message | Y
 message.createTimestamp | string | Unix timestamp (seconds) of when message was created in UTC timezone | Y
 message.text | string | Text of the message | Y
+
+## Update Lead
+
+> Sample Request Body
+
+```json
+{
+  "leadID": 465324000282984455,
+  "leadPrice": "$26.00",
+  "chargeState": "Charged",
+}
+```
+
+> Sample Request (assuming above JSON was saved as data.json)
+
+```shell
+curl -X PUT https://www.api.[partner].com/v1/lead/update
+    -d data.json
+    -H 'Content-Type:application/json'
+    --user '<thumbtack_username>:<thumbtack_password>'
+```
+
+This endpoint will be called by Thumbtack to update the lead payload to Partners.
+Currently, lead price generated after generating the leads, so Thumbtack need new update lead API for sending updated payload to any Partner.
+
+This update lead endpoint should be `PUT`.
+
+### HTTP Endpoint
+
+`PUT https://api.[partner].com/v1/lead/update`
+
+*Note that the naming of this endpoint is flexible and dictated by the Partner.*
+
+### Expected Request Body
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+leadID | string | ID of the lead | Y
+leadPrice | string | Estimated price that Pro will pay it to Thumbtack | N
+chargeState | string | leadPrice Charge state value | N
+
+### ChargeState Values
+
+When `leadPrice` is null, you will get `chargeState` as null.
+
+When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
 
 
 # Development Guide
