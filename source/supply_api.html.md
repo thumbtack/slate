@@ -337,8 +337,6 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/disconnect-part
 }
 ```
 
-<span style="color:red">THIS API IS ONLY FOR TESTING PURPOSE</span>
-
 Removes tokens and disables the service on Thumbtack side so which will allow partner/pro to retrigger the OAuth initialization flow.
 
 ### HTTP Endpoint
