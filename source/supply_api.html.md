@@ -37,6 +37,12 @@ Contact Thumbtack Partnership team for getting the client-side credentials. Thes
 
 While requesting for the client credentials, partners will have to provide redirectURL to Thumbtack team.
 
+### Test OAuth flow during API Integration
+
+Partners will be able to test the OAuth flow by requesting the test client. They will need two separate clients for testing and production. 
+They will have to contact the Thumbtack partnership team for creating the test client which will allow you to test the entire OAuth flow.
+They will have to provide different redirectURL for the Production credentials and staging credentials.
+
 ## STEP 2: Connect Thumbtack account with Partner
 > Sample URL
 
@@ -58,11 +64,25 @@ redirect_uri | string | Thumbtack redirects Pro to this URL after they authoriza
 response_type | string | Must contain string `code` as a response type | Y
 state | string | Client can insert state information that will be appended to the redirect_uri upon success user authorization | N
 
+### Test OAuth flow during API Integration
+> Sample URL
+
+```
+https://thumbtack.com/services/partner-connect/?client_id=%3CCLIENT_ID%3E&redirect_uri=%3CREDIRECT_URL%3E&response_type=code&scope=messages
+```
+
+Partners will be able to get the AuthCode with the test Client via partner connect URL.
+
 ## STEP 3: Pro Authorizes Partner
 
 Pro can select Thumbtack Business name from the dropdown and click on the “Confirm Connection” button to Authorize that partner.
 
 ![image info](images/authcode.png)
+
+### Test OAuth flow during API Integration
+
+<span style="color:Red">**NOTE:**</span> If Partners are using test Client, they can generate the Auth-code as many times as they want. 
+They are not required to disconnect the flow before issuing the Auth-Code again.
 
 ## STEP 4: Authorization Code
 > Sample URL when Redirect URL is https://redirect.thumbtack.com
@@ -82,7 +102,6 @@ After confirms the connection, There are two ways client will receive auth-code:
 
 ![image info](images/authcode_2.png)
 
-
 ### Expected Parameters in the URL
 Parameter | Type | Description 
 --------- | ---- | ----------- 
@@ -91,6 +110,18 @@ code | string | Authorization code appended to redirect_url in the previous step
 Grab the Authorization Code and follow the below steps to get the Access Token.
 
 <span style="color:Green">***Auth code expiry time - 5 minutes***</span>
+
+### Test OAuth flow during API Integration
+> Sample URL when Redirect URL is https://redirect.thumbtack.com
+
+```
+https://redirect.thumbtack.com/?code=BnCICCQ9KWF6WXj_xtiN3A
+```
+
+This step issues the auth-code for test client same as the production flow. Please check above information for more details.
+
+<span style="color:Red">**NOTE:**</span> If Partners are using test Client, they can generate the Auth-code as many times as they want.
+They are not required to disconnect the flow before issuing the Auth-Code again.
 
 ## STEP 5: Request Access Token
 
@@ -153,6 +184,28 @@ refresh_token | string | The refresh token issued by the authorization server | 
 
 <span style="color:Green">***Refresh Token expiry time - 720 hours***</span>
 
+### Test OAuth flow during API Integration
+> Sample Request
+
+```shell
+curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?grant_type=authorization_code&code=BnCICCQ9KWF6WXj_xtiN3A&redirect_uri=http://redirect.thumbtack.com&token_type=AUTH_CODE' \
+--header 'Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK='
+```
+
+> Sample Response
+
+```
+{
+   "access_token": "1.eyJCdXNpbmVzc1BLIjozODgwMDYwNjczNTExNTA1OTUsIkNsaWVudElEIjoiVEhVTUJUQUNLIElOVEVSTkFMIiwiU2NvcGUiOlsibWVzc2FnZXMiXSwiRXhwaXJlc0F0IjoiMjAyMS0xMC0xNFQwMjo1OToyOS44MjIwMDU2ODhaIiwiU3JjQXV0aENvZGUiOiIwNjcwODgwODI0M2QyOTYxN2E1OTc4ZmZjNmQ4OGRkY2UzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ.qJDfeuYfdFZCSVQmBUgr_kDoZeeEUD4y4oVTVMEc4EQ",
+   "token_type": "bearer",
+   "expires_in": 3600,
+   "refresh_token": "_s3cnwGAb5VgBt-CmYFSOw"
+}
+```
+
+Partners will be able to use the test auth-code and call /tokens API to get the test access token and refresh token pair in /token API response.
+Test tokens behavior is same as the production environment. 
+
 ## STEP 6: Refresh Access Token
 
 > Sample Authorization Header
@@ -214,6 +267,28 @@ If you receive `null` in the response to `/tokens/access` API at the time of ref
 we encourage Partners to implement the retry logic on their side which will call `/tokens/access` API with same refresh token to get the valid response.
 <span style="color:Green">***Grace period time - 10 sec***</span>
 
+### Test OAuth flow during API Integration
+> Sample Request
+
+```shell
+curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?grant_type=refresh_token&refresh_token=zRw4chXenfjNLenO2_lVOQ&token_type=REFRESH' \
+--header 'Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK='
+```
+
+> Sample Response
+
+```
+{
+   "access_token": "1.eyJCdXNpbmVzc1BLIjozODgwMDYwNjczNTExNTA1OTUsIkNsaWVudElEIjoiVEhVTUJUQUNLIElOVEVSTkFMIiwiU2NvcGUiOlsibWVzc2FnZXMiXSwiRXhwaXJlc0F0IjoiMjAyMS0xMC0xNFQwMjo1OToyOS44MjIwMDU2ODhaIiwiU3JjQXV0aENvZGUiOiIwNjcwODgwODI0M2QyOTYxN2E1OTc4ZmZjNmQ4OGRkY2UzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ.qJDfeuYfdFZCSVQmBUgr_kDoZeeEUD4y4oVTVMEc4EQ",
+   "token_type": "bearer",
+   "expires_in": 3600,
+   "refresh_token": "_s3cnwGAb5VgBt-CmYFSOw"
+}
+```
+
+Partners will be able to use the test auth-code and call /tokens API to get the test access token and refresh token pair in /token API response.
+Test tokens behavior is same as the production environment.
+
 # Thumbtack Endpoints
 
 Thumbtack will expose the following endpoints to Partners.
@@ -274,6 +349,27 @@ Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 text | string | Text of the message | Y
 
+### Test OAuth flow during API Integration
+> Sample Request
+
+```shell
+curl --location --request POST 'https://api.thumbtack.com/v2/business/395023207611023372/lead/123/message' \
+--header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjozOTUwMjMyMDc2MTEwMjMzNzIsIkNsaWVudElEIjoicHJvbmV4aSIsIlNjb3BlIjpbIm1lc3NhZ2VzIl0sIkV4cGlyZXNBdCI6IjIwMjEtMTAtMjJUMjI6MTM6MDMuNDMwMTMwNzQ4WiIsIlNyY0F1dGhDb2RlIjoiNGJlOTFjNTIyN2RmOGIxNTdjNjZlMTlkOGRhMjI0ZTRlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiQWNjb3VudElEIjozMDczMDYyNDIwMTgzOTQzMTZ9.CyNhsuC0JQDM9zNrpjduD7Ja_qLbQw51bq_H7Ry39C4' \
+--header 'Content-Type: application/json' \
+--data-raw '{"text": "Hello, how can I help you?"}'
+```
+
+> Sample Response
+
+```json
+{
+    "status": "success"
+}
+```
+
+If the access token passes as an authorization header related to the test client, Thumbtack will only validate the token and return the dummy response. 
+(As test clients are only for testing the OAuth flow and to check if they can hit the actual API with that token or not.)
+
 ## Thumbtack Info
 
 > Sample Authorization Header
@@ -323,6 +419,30 @@ client_id | string | Consumer key provided by Thumbtack which related to the acc
 scope | array | Authorization scopes allow to access specific information from Thumbtack.  | Y
 business_name | string | Business Name related to the access token. | Y
 
+### Test OAuth flow during API Integration
+> Sample Request
+
+```shell
+curl --location --request GET 'https://pro-api.thumbtack.com/v2/get-thumbtack-info' \
+--header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjozMTQxNDgwOTYyOTIxODQyNDMsIkNsaWVudElEIjoiODJNUlY1MmFGSXUwU0ZZTEpPM3NzcHg3aGF3RjVaZXozdVJTVkNRMCtsST0iLCJTY29wZSI6WyJtZXNzYWdlcyJdLCJFeHBpcmVzQXQiOiIyMDIxLTExLTEyVDIyOjE0OjU3Ljc3MzI5NTgyM1oiLCJTcmNBdXRoQ29kZSI6IjE2NDE1OWY1MDk2YzgxZTRiNzA5ODY4MjJjYWI3MWQzZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsIkFjY291bnRJRCI6MzgxMzU1NTEwMjM1Mjc1Mjc0fQ.IXT9OXvHO43u7Z4SZPjNtbQ_hipMIAbNI7GmpmvobUE' \
+--header 'Content-Type: application/json'
+```
+
+> Sample Response
+
+```json
+{
+  "business_pk": "388006067351150595",
+  "client_id": "THUMBTACK INTERNAL",
+  "scope": [
+    "messages"
+  ],
+  "business_name": "cleaner business"
+}
+```
+
+Partners will be able to use the access token to get the thumbtack information like (BusinessPK, clientID, etc.)
+
 ## Disconnect from OAuth Flow
 > Sample Authorization Header
 
@@ -335,7 +455,6 @@ Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK=
 ```shell
 curl --location --request POST 'https://pro-api.thumbtack.com/v2/disconnect-partner?business_pk=432428213655306241' \
 --header 'Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK='
-
 ```
 
 > Sample Response
@@ -371,6 +490,26 @@ Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 business_pk | string | Business PK | Y
 client_id | string | Consumer key provided by Thumbtack related to the business. | Y
+
+### Test OAuth flow during API Integration
+> Sample Request
+
+```shell
+curl --location --request POST 'https://pro-api.thumbtack.com/v2/disconnect-partner?business_pk=432428213655306241' \
+--header 'Authorization: Basic VEhVTUJUQUNLIElOVEVSTkFMOlp4UnFMbnZZQUMzSERqVFlkem9sdFEK='
+```
+
+> Sample Response
+
+```json
+{
+  "business_pk": "432428213655306241",
+  "client_id": "THUMBTACK INTERNAL"
+}
+```
+Disconnect flow will remove all the previous auth-codes and tokens from the Thumbtack database.
+
+<span style="color:Red">**NOTE:**</span> Thumbtack team will always recommend that partners should call this endpoint when they completed the testing so that Thumbtack can do a cleanup in order to remove older tokens and older auth codes.
 
 # Partner Endpoints
 
