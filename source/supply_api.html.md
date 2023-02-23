@@ -27,7 +27,17 @@ Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Te
 
 # Authentication
 
-## STEP 1: Connect Thumbtack account with Partner
+## STEP 1: Get Client Credentials
+
+Contact Thumbtack Partnership team for getting the client-side credentials. These credentials will contains these two information:
+
+* Client ID / Consumer Key 
+
+* Client Secret / Consumer Secret
+
+While requesting for the client credentials, partners will have to provide redirectURL to Thumbtack team.
+
+## STEP 2: Connect Thumbtack account with Partner
 > Sample URL
 
 ```
@@ -48,13 +58,13 @@ redirect_uri | string | Thumbtack redirects Pro to this URL after they authoriza
 response_type | string | Must contain string `code` as a response type | Y
 state | string | Client can insert state information that will be appended to the redirect_uri upon success user authorization | N
 
-## STEP 2: Pro Authorizes Partner
+## STEP 3: Pro Authorizes Partner
 
 Pro can select Thumbtack Business name from the dropdown and click on the “Confirm Connection” button to Authorize that partner.
 
 ![image info](images/authcode.png)
 
-## STEP 3: Authorization Code
+## STEP 4: Authorization Code
 > Sample URL when Redirect URL is https://redirect.thumbtack.com
 
 ```
@@ -82,7 +92,7 @@ Grab the Authorization Code and follow the below steps to get the Access Token.
 
 <span style="color:Green">***Auth code expiry time - 5 minutes***</span>
 
-## STEP 4: Request Access Token
+## STEP 5: Request Access Token
 
 > Sample Authorization Header
 
@@ -143,7 +153,7 @@ refresh_token | string | The refresh token issued by the authorization server | 
 
 <span style="color:Green">***Refresh Token expiry time - 720 hours***</span>
 
-## STEP 5: Refresh Access Token
+## STEP 6: Refresh Access Token
 
 > Sample Authorization Header
 
