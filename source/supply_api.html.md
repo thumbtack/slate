@@ -29,17 +29,17 @@ Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Te
 
 ## STEP 1: Get Client Credentials
 
-Contact Thumbtack Partnership team for getting the client-side credentials. These credentials will contains these two information:
+Contact Thumbtack Partnership team for get the client-side credentials. These credentials will contain these two piece of information:
 
 * Client ID / Consumer Key 
 
 * Client Secret / Consumer Secret
 
-While requesting for the client credentials, partners will have to provide redirectURL to Thumbtack team.
+While requesting the client credentials, partners will have to provide redirectURL to the Thumbtack team.
 
 ### Test OAuth flow during API Integration
 
-Partners will be able to test the OAuth flow by requesting the test client. They will need two separate clients for testing and production. 
+Partners can test the OAuth flow by requesting the test client. They will need two separate clients for testing and production. 
 They will have to contact the Thumbtack partnership team for creating the test client which will allow you to test the entire OAuth flow.
 They will have to provide different redirectURL for the Production credentials and staging credentials.
 
@@ -75,7 +75,7 @@ Partners will be able to get the AuthCode with the test Client via partner conne
 
 ## STEP 3: Pro Authorizes Partner
 
-Pro can select Thumbtack Business name from the dropdown and click on the “Confirm Connection” button to Authorize that partner.
+Pro can select the Thumbtack Business name from the dropdown and click on the “Confirm Connection” button to Authorize that partner.
 
 ![image info](images/authcode.png)
 
@@ -91,14 +91,14 @@ They are not required to disconnect the flow before issuing the Auth-Code again.
 https://redirect.thumbtack.com/?code=BnCICCQ9KWF6WXj_xtiN3A
 ```
 
-After confirms the connection, There are two ways client will receive auth-code:
+After confirming the connection, There are two ways the client will receive auth-code:
 
-* If client send `redirect_uri` in the URL(step-1), then Thumbtack redirects the pro to a third-party URL with the authorization code in the URL. Redirection URL will look like below:
+* If the client sends `redirect_uri` in the URL(step-1), then Thumbtack redirects the pro to a third-party URL with the authorization code in the URL. Redirection URL will look like below:
 
 `<REDIRECT_URL>/?code=<AUTHORIZATION_CODE>&scope=messages
 `
 
-* If Client does not send `redirect_uri` in the URL(step-1), then client will see auth code like below.
+* If the client does not send `redirect_uri` in the URL(step-1), then the client will see auth code like below.
 
 ![image info](images/authcode_2.png)
 
@@ -118,7 +118,7 @@ Grab the Authorization Code and follow the below steps to get the Access Token.
 https://redirect.thumbtack.com/?code=BnCICCQ9KWF6WXj_xtiN3A
 ```
 
-This step issues the auth-code for test client same as the production flow. Please check above information for more details.
+This step issues the auth-code for test client same as the production flow. Please check the above information for more details.
 
 <span style="color:Red">**NOTE:**</span> If Partners are using test Client, they can generate the Auth-code as many times as they want.
 They are not required to disconnect the flow before issuing the Auth-Code again.
@@ -149,7 +149,7 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?g
 }
 ```
 
-Once the pro authorizes access, the user is redirected back to the URL with the authorization code. This API will use authorization code in request return access token and refresh token in response.
+Once the pro authorizes access, the user is redirected back to the URL with the authorization code. This API will use an authorization code from the request return access token and refresh token in the response.
 
 ### Request Endpoint
 
@@ -177,7 +177,7 @@ Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 access_token | string | The access token issued by the authorization server | Y
 token_type | string | Type of the token issued. Must return `bearer` as a token type | Y
-expires_in | number | Access Token lifetime in seconds. Default expiry is `3600` seconds (1 hour).  | Y
+expires_in | number | Access Token lifetime in seconds. The default expiry is `3600` seconds (1 hour).  | Y
 refresh_token | string | The refresh token issued by the authorization server | Y
 
 <span style="color:Green">***Access Token expiry time - 1 hour***</span>
@@ -203,8 +203,8 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?g
 }
 ```
 
-Partners will be able to use the test auth-code and call /tokens API to get the test access token and refresh token pair in /token API response.
-Test tokens behavior is same as the production environment. 
+Partners will be able to use the test auth-code and call /tokens API to get the test access token and refresh token pair in the /token API response.
+Test token's behavior is the same as the production environment. 
 
 ## STEP 6: Refresh Access Token
 
@@ -258,7 +258,7 @@ Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 access_token | string | The access token issued by the authorization server | Y
 token_type | string | Type of the token issued. Must return `bearer` as a token type | Y
-expires_in | number | Access Token lifetime in seconds. Default expiry is `3600` seconds (1 hour).  | Y
+expires_in | number | Access Token lifetime in seconds. The default expiry is `3600` seconds (1 hour).  | Y
 refresh_token | string | The refresh token issued by the authorization server | Y
 
 ### Error handling with grace period 
@@ -286,15 +286,15 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/tokens/access?g
 }
 ```
 
-Partners will be able to use the test auth-code and call /tokens API to get the test access token and refresh token pair in /token API response.
-Test tokens behavior is same as the production environment.
+Partners will be able to use the test auth-code and call /tokens API to get the test access token and refresh token pair in the /token API response.
+Test token's behavior is the same as the production environment.
 
 # Thumbtack Endpoints
 
 Thumbtack will expose the following endpoints to Partners.
 All endpoints should be versioned to support future schema changes.
 Endpoints will use HTTP basic authentication, and Thumbtack will provide
-Partners with username and password for Partners to call these endpoints.
+Partners with a username and password for Partners to call these endpoints.
 Note that passing in the `Content-Type` header is required.
 
 ## Messages
@@ -466,7 +466,7 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/disconnect-part
 }
 ```
 
-Removes tokens and disables the service on Thumbtack side so which will allow partner/pro to retrigger the OAuth initialization flow.
+Removes tokens and disables the service on the Thumbtack side so which will allow the partner/pro to trigger the OAuth initialization flow again.
 
 ### HTTP Endpoint
 `POST https://pro-api.thumbtack.com/v2/disconnect-partner`
@@ -611,7 +611,7 @@ business.businessID | string | ID of the business (pro) | Y
 business.name | string | Business name | Y
 price | string | Price estimate for the job | N
 leadType | string | Type of lead that Thumbtack is sending | N
-leadPrice | string | Estimated price that Pro will pay it to Thumbtack | N
+leadPrice | string | Estimated price that Pro will pay to Thumbtack | N
 chargeState | string | leadPrice Charge state value | N 
 
 \* There are a variety of possible schedule strings. The most common structure is as follows:
@@ -729,8 +729,8 @@ curl -X PUT https://www.api.[partner].com/v1/lead/update
     --user '<thumbtack_username>:<thumbtack_password>'
 ```
 
-This endpoint will be called by Thumbtack to update the lead payload to Partners.
-Currently, lead price generated after generating the leads, so Thumbtack need new update lead API for sending updated payload to any Partner.
+This endpoint will be called by Thumbtack to update the lead payload to Partners. 
+Currently, lead price is generated after generating the leads, so Thumbtack needs a new `updateLead` API for sending updated payload to any Partner. 
 
 This update lead endpoint should be `PUT`.
 
@@ -745,7 +745,7 @@ This update lead endpoint should be `PUT`.
 Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 leadID | string | ID of the lead | Y
-leadPrice | string | Estimated price that Pro will pay it to Thumbtack | N
+leadPrice | string | Estimated price that Pro will pay to Thumbtack | N
 chargeState | string | leadPrice Charge state value | N
 
 ### ChargeState Values
