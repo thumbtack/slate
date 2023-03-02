@@ -714,7 +714,7 @@ message.text | string | Text of the message | Y
 
 ```json
 {
-  "leadID": 465324000282984455,
+  "leadID": "465324000282984455",
   "leadPrice": "$26.00",
   "chargeState": "Charged",
 }
