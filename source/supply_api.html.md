@@ -533,9 +533,11 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
     "description": "There is a stain on the door that needs to be touched up.",
     "schedule": "Date: Tue, May 05 2020\nTime: 6:00 PM\nLength: 3.5 hours",
     "location": {
-      "city": "San Jose",
+      "address1": "101 Alma Street",
+      "address2": "",
+      "city": "Palo Alto",
       "state": "CA",
-      "zipCode": "95125"
+      "zipCode": "94301"
     },
     "travelPreferences": "Professional must travel to my address.",
     "details": [
@@ -558,7 +560,7 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
     "businessID": "286845156044809661",
     "name": "Tim's Painting Business"
   },
-  "leadType": "ESTIMATION",
+  "leadType": "INSTANT_BOOK",
   "leadPrice": null,
   "chargeState": null
 }
@@ -595,6 +597,8 @@ request.title | string | Title of the request | Y
 request.description | string | Description of the request | N
 request.schedule\* | string | Details on when the customer wants to complete the job | N
 request.location | object | JSON location object | Y
+request.location.address1 | string | Street address for the following lead types INSTANT_BOOK, BOOKING, INSTANT_CONSULT, SERVICE_CALL | Y
+request.location.address2 | string | Additional address info for the following lead types INSTANT_BOOK, BOOKING, INSTANT_CONSULT, SERVICE_CALL | Y
 request.location.city | string | City for the request location | Y
 request.location.state | string | State (two letter abbreviation) for the request location | Y
 request.location.zipCode | string | Zip code (five digit) for the request location | Y
