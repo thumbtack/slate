@@ -814,6 +814,27 @@ This endpoint updates the targeting preference for all the active categories of 
 
 `access_token` is the value that you received along with the `/token/access API`.
 
+### Expected Request Body
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+enabled | boolean | Pause or turn on targeting. Value can be “true” or “false”  | Y
+
+### Error Codes:
+
+#### 400 Bad Request
+* Invalid ServiceID type
+* Invalid body
+* Missing body
+
+#### 401 Unauthorized
+* Invalid auth header
+* Missing auth header
+* Invalid ServiceID
+
+#### 404 Not Found
+* Missing ServiceID
+
 ## Category based Targeting Endpoint
 
 > Sample Authorization Header
@@ -854,6 +875,30 @@ This endpoint updates the targeting preference for the specified categoryID of t
 `Authorization: Bearer <access_token>`
 
 `access_token` is the value that you received along with the `/token/access API`.
+
+### Expected Request Body
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+enabled | boolean | Pause or turn on targeting. Value can be “true” or “false” | Y
+
+### Error Codes:
+
+#### 400 Bad Request
+* Invalid ServiceID type
+* Invalid CategoryID type
+* Invalid body
+* Missing body
+
+#### 401 Unauthorized
+* Invalid auth header
+* Missing auth header
+* Invalid ServiceID
+
+#### 404 Not Found
+* Missing ServiceID
+* Missing CategoryID
+* Invalid CategoryID
 
 # Development Guide
 
