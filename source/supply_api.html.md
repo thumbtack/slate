@@ -293,8 +293,6 @@ Test token's behavior is the same as the production environment.
 
 Thumbtack will expose the following endpoints to Partners.
 All endpoints should be versioned to support future schema changes.
-Endpoints will use HTTP basic authentication, and Thumbtack will provide
-Partners with a username and password for Partners to call these endpoints.
 Note that passing in the `Content-Type` header is required.
 
 ## Messages
@@ -324,18 +322,21 @@ curl --location --request POST 'https://api.thumbtack.com/v2/business/3950232076
 
 Send messages on behalf of the Pro to a Thumbtack customer for a given lead.
 This is an endpoint Thumbtack has created for Partners to call. Thumbtack provides both a production
-and test environment endpoint.
+and test environment endpoint. <br />
+`/v2` Endpoint will require `Bearer <access_token>` in the `Authorization` header. <br />
+`/v1` Endpoint will use HTTP basic authentication, and Thumbtack will provide
+Partners with a username and password for Partners to call these endpoints.
 
 ### Request Endpoint (Production Environment)
 `POST https://pro-api.thumbtack.com/v2/business/{BusinessID}/lead/{leadID}/message`
 
-`:businessID` is the identifier of your business.
+`:businessID` is the identifier of your business. <br />
 `:leadID` is the identifier of the lead whose customer you wish to message.
 
 ### HTTP Endpoint (Test Environment)
 `POST https://staging-pro-api.thumbtack.com/v2/business/{BusinessID}/lead/{leadID}/message`
 
-`:businessID` is the identifier of your business.
+`:businessID` is the identifier of your business. <br />
 `:leadID` is the identifier of the lead whose customer you wish to message.
 
 ### Request Header
@@ -467,6 +468,8 @@ curl --location --request POST 'https://pro-api.thumbtack.com/v2/disconnect-part
 ```
 
 Removes tokens and disables the service on the Thumbtack side so which will allow the partner/pro to trigger the OAuth initialization flow again.
+Endpoints will use HTTP basic authentication, and Thumbtack will provide 
+Partners with a username and password for Partners to call these endpoints.
 
 ### HTTP Endpoint
 `POST https://pro-api.thumbtack.com/v2/disconnect-partner`
@@ -758,6 +761,99 @@ When `leadPrice` is null, you will get `chargeState` as null.
 
 When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
 
+
+# Targeting Endpoints
+
+Thumbtack provided these endpoints to the partner for updating the category targeting preferences.
+To use these endpoints, partners will require to pass the `Bearer <access_token>` in the `Authorization` header.
+Note that passing in the `Content-Type` header is required.
+
+NOTE:
+Please use the `targeting` scope while initializing the OAuth flow to use any of the targeting APIs.
+Sample partner-connect URL with targeting scope: <br />
+```
+https://thumbtack.com/services/partner-connect/?client_id=<ClientID>&redirect_uri=<RedirectURL>&response_type=code&scope=targeting
+```
+
+## Service based Targeting Endpoint
+> Sample Authorization Header
+
+```
+Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xM1QyMDowODo0OC4yNTAyNjgxMjNaIiwiU3JjQXV0aENvZGUiOiJkOWU4MWMwNTRmMGFmYjBlMDE1ZWJlYmI2ZmJjNDkxMWUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.EKPoRvI29bSEnD5ofWIBzxY0HkTWCVc6aej8h3Pu_gg
+```
+
+> Sample Request
+
+```shell
+curl --location --request PATCH 'https://pro-api.thumbtack.com/v3/accounts/~/services/440370671984222213/preferences/targeting' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xM1QyMDowODo0OC4yNTAyNjgxMjNaIiwiU3JjQXV0aENvZGUiOiJkOWU4MWMwNTRmMGFmYjBlMDE1ZWJlYmI2ZmJjNDkxMWUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.EKPoRvI29bSEnD5ofWIBzxY0HkTWCVc6aej8h3Pu_gg' \
+--data-raw '{  
+   "enabled": "true" 
+}'
+```
+
+> Sample Response
+
+```json
+{
+  "status": "success"
+}
+```
+
+This endpoint updates the targeting preference for all the active categories of the specified serviceID.
+
+### Request Endpoint (Production Environment)
+`PATCH https://pro-api.thumbtack.com/v3/accounts/{accountID}/services/{serviceID}/preferences/targeting`
+
+`:accountID` is the identifier of your account. (NOTE: you can pass `~` for now) <br />
+`:serviceID` is the identifier of your business.
+
+### Request Header
+`Authorization: Bearer <access_token>`
+
+`access_token` is the value that you received along with the `/token/access API`.
+
+## Category based Targeting Endpoint
+
+> Sample Authorization Header
+
+```
+Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xMlQwMDowODo1NS42MTY2NzUyMjZaIiwiU3JjQXV0aENvZGUiOiJmN2E4NzFiOTNmZTFiYjE2ODU2NmFhYjJhM2U3OGY5OGUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.DGOkATz50BcFyIOJAq8l4zB0IN84flSk7Sd-XlDWVXI
+```
+
+> Sample Request
+
+```shell
+curl --location --request PATCH 'https://pro-api.thumbtack.com/v3/accounts/~/services/440370671984222213/categories/109125193401647362/preferences/targeting' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xMlQwMDowODo1NS42MTY2NzUyMjZaIiwiU3JjQXV0aENvZGUiOiJmN2E4NzFiOTNmZTFiYjE2ODU2NmFhYjJhM2U3OGY5OGUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.DGOkATz50BcFyIOJAq8l4zB0IN84flSk7Sd-XlDWVXI' \
+--data-raw '{  
+   "enabled": "false" 
+}'
+```
+
+> Sample Response
+
+```json
+{
+  "status": "success"
+}
+```
+
+This endpoint updates the targeting preference for the specified categoryID of the specified serviceID.
+
+### Request Endpoint (Production Environment)
+`PATCH https://pro-api.thumbtack.com/v3/accounts/{accountID}/services/{serviceID}/categories/{categoryID}/preferences/targeting`
+
+`:accountID` is the identifier of your account. (NOTE: you can pass `~` for now) <br />
+`:serviceID` is the identifier of your business. <br />
+`:categoryID` is the identifier of your category related to your business.
+
+### Request Header
+`Authorization: Bearer <access_token>`
+
+`access_token` is the value that you received along with the `/token/access API`.
 
 # Development Guide
 
