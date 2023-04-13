@@ -768,7 +768,7 @@ Thumbtack provided these endpoints to the partner for updating the category targ
 To use these endpoints, partners will require to pass the `Bearer <access_token>` in the `Authorization` header.
 Note that passing in the `Content-Type` header is required.
 
-NOTE:
+<span style="color:Red">**NOTE:**</span>
 Please use the `targeting` scope while initializing the OAuth flow to use any of the targeting APIs.
 Sample partner-connect URL with targeting scope: <br />
 ```
@@ -806,7 +806,7 @@ This endpoint updates the targeting preference for all the active categories of 
 ### Request Endpoint (Production Environment)
 `PATCH https://pro-api.thumbtack.com/v3/accounts/{accountID}/services/{serviceID}/preferences/targeting`
 
-`:accountID` is the identifier of your account. (NOTE: you can pass `~` for now) <br />
+`:accountID` is the identifier of your account. (<span style="color:Red">**NOTE:**</span>  you can pass `~` for now) <br />
 `:serviceID` is the identifier of your business.
 
 ### Request Header
@@ -867,7 +867,7 @@ This endpoint updates the targeting preference for the specified categoryID of t
 ### Request Endpoint (Production Environment)
 `PATCH https://pro-api.thumbtack.com/v3/accounts/{accountID}/services/{serviceID}/categories/{categoryID}/preferences/targeting`
 
-`:accountID` is the identifier of your account. (NOTE: you can pass `~` for now) <br />
+`:accountID` is the identifier of your account. (<span style="color:Red">**NOTE:**</span>  you can pass `~` for now) <br />
 `:serviceID` is the identifier of your business. <br />
 `:categoryID` is the identifier of your category related to your business.
 
