@@ -514,6 +514,148 @@ Disconnect flow will remove all the previous auth-codes and tokens from the Thum
 
 <span style="color:Red">**NOTE:**</span> Thumbtack team will always recommend that partners should call this endpoint when they completed the testing so that Thumbtack can do a cleanup in order to remove older tokens and older auth codes.
 
+## Targeting Endpoints
+
+Targeting preferences tell Thumbtack where you work when you work, and what kind of work you do. 
+They also help the right customers find you. 
+That’s why you need to set targeting preferences before you appear in Thumbtack search results.
+To use these endpoints, partners will require to pass the `Bearer <access_token>` in the `Authorization` header.
+Note that passing in the `Content-Type` header is required.
+
+<span style="color:Red">**NOTE:**</span>
+Please use the `targeting` scope while initializing the OAuth flow to use any of the targeting APIs.
+Sample partner-connect URL with targeting scope: <br />
+```
+https://thumbtack.com/services/partner-connect/?client_id=<ClientID>&redirect_uri=<RedirectURL>&response_type=code&scope=targeting
+```
+
+### 1. Service based Targeting Endpoint
+> Sample Authorization Header
+
+```
+Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xM1QyMDowODo0OC4yNTAyNjgxMjNaIiwiU3JjQXV0aENvZGUiOiJkOWU4MWMwNTRmMGFmYjBlMDE1ZWJlYmI2ZmJjNDkxMWUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.EKPoRvI29bSEnD5ofWIBzxY0HkTWCVc6aej8h3Pu_gg
+```
+
+> Sample Request
+
+```shell
+curl --location --request PATCH 'https://pro-api.thumbtack.com/v3/accounts/~/services/440370671984222213/preferences/targeting' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xM1QyMDowODo0OC4yNTAyNjgxMjNaIiwiU3JjQXV0aENvZGUiOiJkOWU4MWMwNTRmMGFmYjBlMDE1ZWJlYmI2ZmJjNDkxMWUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.EKPoRvI29bSEnD5ofWIBzxY0HkTWCVc6aej8h3Pu_gg' \
+--data-raw '{  
+   "enabled": "true" 
+}'
+```
+
+> Sample Response
+
+```json
+{
+  "status": "success"
+}
+```
+
+Targeting preferences can be managed from the Services page or through this endpoint which allows you to 
+turn targeting on and off for a specific serviceID.
+
+### Request Endpoint (Production Environment)
+`PATCH https://pro-api.thumbtack.com/v3/accounts/{accountID}/services/{serviceID}/preferences/targeting`
+
+`:accountID` is the identifier of your account. (<span style="color:Red">**NOTE:**</span>  you can pass `~` for now) <br />
+`:serviceID` is the identifier of your business.
+
+### Request Header
+`Authorization: Bearer <access_token>`
+
+`access_token` is the value that you received along with the `/token/access API`.
+
+### Expected Request Body
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+enabled | boolean | Pause or turn on targeting. Value can be “true” or “false”  | Y
+
+### Error Codes:
+
+#### 400 Bad Request
+* Invalid ServiceID type
+* Invalid body
+* Missing body
+
+#### 401 Unauthorized
+* Invalid auth header
+* Missing auth header
+* Invalid ServiceID
+
+#### 404 Not Found
+* Missing ServiceID
+
+### 2. Category based Targeting Endpoint
+
+> Sample Authorization Header
+
+```
+Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xMlQwMDowODo1NS42MTY2NzUyMjZaIiwiU3JjQXV0aENvZGUiOiJmN2E4NzFiOTNmZTFiYjE2ODU2NmFhYjJhM2U3OGY5OGUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.DGOkATz50BcFyIOJAq8l4zB0IN84flSk7Sd-XlDWVXI
+```
+
+> Sample Request
+
+```shell
+curl --location --request PATCH 'https://pro-api.thumbtack.com/v3/accounts/~/services/440370671984222213/categories/109125193401647362/preferences/targeting' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xMlQwMDowODo1NS42MTY2NzUyMjZaIiwiU3JjQXV0aENvZGUiOiJmN2E4NzFiOTNmZTFiYjE2ODU2NmFhYjJhM2U3OGY5OGUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.DGOkATz50BcFyIOJAq8l4zB0IN84flSk7Sd-XlDWVXI' \
+--data-raw '{  
+   "enabled": "false" 
+}'
+```
+
+> Sample Response
+
+```json
+{
+  "status": "success"
+}
+```
+
+Targeting preferences can be managed from the Services page or through this endpoint which allows you 
+to turn targeting on and off for a specific serviceID and categoryID.
+
+### Request Endpoint (Production Environment)
+`PATCH https://pro-api.thumbtack.com/v3/accounts/{accountID}/services/{serviceID}/categories/{categoryID}/preferences/targeting`
+
+`:accountID` is the identifier of your account. (<span style="color:Red">**NOTE:**</span>  you can pass `~` for now) <br />
+`:serviceID` is the identifier of your business. <br />
+`:categoryID` is the identifier of your category related to your business.
+
+### Request Header
+`Authorization: Bearer <access_token>`
+
+`access_token` is the value that you received along with the `/token/access API`.
+
+### Expected Request Body
+
+Parameter | Type | Description | Required
+--------- | ---- | ----------- | --------
+enabled | boolean | Pause or turn on targeting. Value can be “true” or “false” | Y
+
+### Error Codes:
+
+#### 400 Bad Request
+* Invalid ServiceID type
+* Invalid CategoryID type
+* Invalid body
+* Missing body
+
+#### 401 Unauthorized
+* Invalid auth header
+* Missing auth header
+* Invalid ServiceID
+
+#### 404 Not Found
+* Missing ServiceID
+* Missing CategoryID
+* Invalid CategoryID
+
 # Partner Endpoints
 
 Partners will expose the following endpoints to Thumbtack.
@@ -760,145 +902,6 @@ chargeState | string | leadPrice Charge state value | N
 When `leadPrice` is null, you will get `chargeState` as null.
 
 When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
-
-
-# Targeting Endpoints
-
-Thumbtack provided these endpoints to the partner for updating the category targeting preferences.
-To use these endpoints, partners will require to pass the `Bearer <access_token>` in the `Authorization` header.
-Note that passing in the `Content-Type` header is required.
-
-<span style="color:Red">**NOTE:**</span>
-Please use the `targeting` scope while initializing the OAuth flow to use any of the targeting APIs.
-Sample partner-connect URL with targeting scope: <br />
-```
-https://thumbtack.com/services/partner-connect/?client_id=<ClientID>&redirect_uri=<RedirectURL>&response_type=code&scope=targeting
-```
-
-## Service based Targeting Endpoint
-> Sample Authorization Header
-
-```
-Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xM1QyMDowODo0OC4yNTAyNjgxMjNaIiwiU3JjQXV0aENvZGUiOiJkOWU4MWMwNTRmMGFmYjBlMDE1ZWJlYmI2ZmJjNDkxMWUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.EKPoRvI29bSEnD5ofWIBzxY0HkTWCVc6aej8h3Pu_gg
-```
-
-> Sample Request
-
-```shell
-curl --location --request PATCH 'https://pro-api.thumbtack.com/v3/accounts/~/services/440370671984222213/preferences/targeting' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xM1QyMDowODo0OC4yNTAyNjgxMjNaIiwiU3JjQXV0aENvZGUiOiJkOWU4MWMwNTRmMGFmYjBlMDE1ZWJlYmI2ZmJjNDkxMWUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.EKPoRvI29bSEnD5ofWIBzxY0HkTWCVc6aej8h3Pu_gg' \
---data-raw '{  
-   "enabled": "true" 
-}'
-```
-
-> Sample Response
-
-```json
-{
-  "status": "success"
-}
-```
-
-This endpoint updates the targeting preference for all the active categories of the specified serviceID.
-
-### Request Endpoint (Production Environment)
-`PATCH https://pro-api.thumbtack.com/v3/accounts/{accountID}/services/{serviceID}/preferences/targeting`
-
-`:accountID` is the identifier of your account. (<span style="color:Red">**NOTE:**</span>  you can pass `~` for now) <br />
-`:serviceID` is the identifier of your business.
-
-### Request Header
-`Authorization: Bearer <access_token>`
-
-`access_token` is the value that you received along with the `/token/access API`.
-
-### Expected Request Body
-
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-enabled | boolean | Pause or turn on targeting. Value can be “true” or “false”  | Y
-
-### Error Codes:
-
-#### 400 Bad Request
-* Invalid ServiceID type
-* Invalid body
-* Missing body
-
-#### 401 Unauthorized
-* Invalid auth header
-* Missing auth header
-* Invalid ServiceID
-
-#### 404 Not Found
-* Missing ServiceID
-
-## Category based Targeting Endpoint
-
-> Sample Authorization Header
-
-```
-Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xMlQwMDowODo1NS42MTY2NzUyMjZaIiwiU3JjQXV0aENvZGUiOiJmN2E4NzFiOTNmZTFiYjE2ODU2NmFhYjJhM2U3OGY5OGUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.DGOkATz50BcFyIOJAq8l4zB0IN84flSk7Sd-XlDWVXI
-```
-
-> Sample Request
-
-```shell
-curl --location --request PATCH 'https://pro-api.thumbtack.com/v3/accounts/~/services/440370671984222213/categories/109125193401647362/preferences/targeting' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer 1.eyJCdXNpbmVzc1BLIjo0NDAzNzA2NzE5ODQyMjIyMTMsIkNsaWVudElEIjoiZkVsSlQ4TzhNZm1zdGZqeFVPclhDWFJKSDl2RE1PL2VWL2NGTUkzenFLST0iLCJTY29wZSI6WyJ0YXJnZXRpbmciXSwiRXhwaXJlc0F0IjoiMjAyMy0wNC0xMlQwMDowODo1NS42MTY2NzUyMjZaIiwiU3JjQXV0aENvZGUiOiJmN2E4NzFiOTNmZTFiYjE2ODU2NmFhYjJhM2U3OGY5OGUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJBY2NvdW50SUQiOjM5ODEyMjMyMDExNjUwNjYzM30.DGOkATz50BcFyIOJAq8l4zB0IN84flSk7Sd-XlDWVXI' \
---data-raw '{  
-   "enabled": "false" 
-}'
-```
-
-> Sample Response
-
-```json
-{
-  "status": "success"
-}
-```
-
-This endpoint updates the targeting preference for the specified categoryID of the specified serviceID.
-
-### Request Endpoint (Production Environment)
-`PATCH https://pro-api.thumbtack.com/v3/accounts/{accountID}/services/{serviceID}/categories/{categoryID}/preferences/targeting`
-
-`:accountID` is the identifier of your account. (<span style="color:Red">**NOTE:**</span>  you can pass `~` for now) <br />
-`:serviceID` is the identifier of your business. <br />
-`:categoryID` is the identifier of your category related to your business.
-
-### Request Header
-`Authorization: Bearer <access_token>`
-
-`access_token` is the value that you received along with the `/token/access API`.
-
-### Expected Request Body
-
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-enabled | boolean | Pause or turn on targeting. Value can be “true” or “false” | Y
-
-### Error Codes:
-
-#### 400 Bad Request
-* Invalid ServiceID type
-* Invalid CategoryID type
-* Invalid body
-* Missing body
-
-#### 401 Unauthorized
-* Invalid auth header
-* Missing auth header
-* Invalid ServiceID
-
-#### 404 Not Found
-* Missing ServiceID
-* Missing CategoryID
-* Invalid CategoryID
 
 # Development Guide
 
