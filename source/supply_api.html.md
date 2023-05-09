@@ -59,10 +59,26 @@ Use the consumer key as a client_ID that Thumbtack provided to you to request an
 Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 client_id | string | Consumer key provided by Thumbtack | Y
-scope | string | Authorization scopes allow to access specific information from Thumbtack. Pass “messages” here | Y
+scope | string | Authorization scopes allow to access specific information from Thumbtack.| Y
 redirect_uri | string | Thumbtack redirects Pro to this URL after they authorization | N
 response_type | string | Must contain string `code` as a response type | Y
 state | string | Client can insert state information that will be appended to the redirect_uri upon success user authorization | N
+
+### Authorization scopes
+
+Partners will have to pass the relevant scope with which they want to integrate. 
+Partners can pass multiple scopes if they want to integrate with multiple Thumbtack endpoints.
+The Access token issued will be limited to the scopes granted.
+
+Available scopes:
+
+* messages 
+  
+* availability
+  
+* bookings
+  
+* targeting 
 
 ### Test OAuth flow during API Integration
 > Sample URL
@@ -95,7 +111,7 @@ After confirming the connection, There are two ways the client will receive auth
 
 * If the client sends `redirect_uri` in the URL(step-1), then Thumbtack redirects the pro to a third-party URL with the authorization code in the URL. Redirection URL will look like below:
 
-`<REDIRECT_URL>/?code=<AUTHORIZATION_CODE>&scope=messages
+`<REDIRECT_URL>/?code=<AUTHORIZATION_CODE>&scope=<SCOPE>
 `
 
 * If the client does not send `redirect_uri` in the URL(step-1), then the client will see auth code like below.
@@ -115,7 +131,7 @@ Grab the Authorization Code and follow the below steps to get the Access Token.
 > Sample URL when Redirect URL is https://redirect.thumbtack.com
 
 ```
-https://redirect.thumbtack.com/?code=BnCICCQ9KWF6WXj_xtiN3A
+https://redirect.thumbtack.com/?code=BnCICCQ9KWF6WXj_xtiN3A&scope=messages
 ```
 
 This step issues the auth-code for test client same as the production flow. Please check the above information for more details.
@@ -320,6 +336,9 @@ curl --location --request POST 'https://api.thumbtack.com/v2/business/3950232076
 }
 ```
 
+<span style="color:Red">**NOTE:**</span> 
+Please contact Thumbtack partnership team if you want to integrate with this endpoint.
+
 Send messages on behalf of the Pro to a Thumbtack customer for a given lead.
 This is an endpoint Thumbtack has created for Partners to call. Thumbtack provides both a production
 and test environment endpoint. <br />
@@ -515,6 +534,9 @@ Disconnect flow will remove all the previous auth-codes and tokens from the Thum
 <span style="color:Red">**NOTE:**</span> Thumbtack team will always recommend that partners should call this endpoint when they completed the testing so that Thumbtack can do a cleanup in order to remove older tokens and older auth codes.
 
 ## Targeting Endpoints
+
+<span style="color:Red">**NOTE:**</span>
+Please contact Thumbtack partnership team if you want to integrate with these endpoints.
 
 Targeting preferences tell Thumbtack where you work when you work, and what kind of work you do. 
 They also help the right customers find you. 
