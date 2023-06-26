@@ -696,6 +696,7 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
   "request": {
     "requestID": "2999842694480093245",
     "category": "Interior Painting",
+    "categoryID": "122681972262289742",
     "title": "Interior Painting",
     "description": "There is a stain on the door that needs to be touched up.",
     "schedule": "Date: Tue, May 05 2020\nTime: 6:00 PM\nLength: 3.5 hours",
@@ -715,6 +716,15 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
       {
         "question": "Number of rooms",
         "answer": "4 rooms"
+      }
+    ],
+    "attachments": [
+      {
+        "fileName": "test_request_attachment.jpg",
+        "fileSize": 20,
+        "mimeType": "image/jpeg",
+        "url": "https://www.thumbtack.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/test_request_attachment.jpg",
+        "description": "test request attachment"
       }
     ]
   },
@@ -760,6 +770,7 @@ createTimestamp | string | Unix timestamp (seconds) of when lead was created in 
 request | object | JSON request object | Y
 request.requestID | string | ID of the request | Y
 request.category | string | Category of the request | Y
+request.categoryID | string | Thumbtack ID of the request category | Y
 request.title | string | Title of the request | Y
 request.description | string | Description of the request | N
 request.schedule\* | string | Details on when the customer wants to complete the job | N
@@ -773,6 +784,12 @@ request.travelPreferences | string | Travel preferences of the customer | Y
 request.details | array | Array of details about the request | N
 request.details.[i].question | string | Request specific question about the job (see example below for clarification) | Y
 request.details.[i].answer | string | Answer to the question (see example below for clarification) | Y
+request.attachments | array | Array of JSON attachment objects included in the request | N
+request.attachments.[i].fileName | string | Attachment file name | Y
+request.attachments.[i].fileSize | number | Attachment size in bytes | Y
+request.attachments.[i].mimeType | string | Attachment MIME type | Y
+request.attachments.[i].url | string | URL to download attachment | Y
+request.attachments.[i].description | string | User-provided description of the attachment | N
 customer | object | JSON customer object | Y
 customer.customerID | string | ID of the customer | Y
 customer.name | string | Name of the customer | Y
@@ -840,7 +857,16 @@ When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
     "messageID": "8699842694484326245",
     "createTimestamp": "1498760294",
     "text": "Do you offer fridge cleaning or is that extra?"
-  }
+  },
+  "attachments": [
+    {
+      "fileName": "test_message_attachment.jpg",
+      "fileSize": 20,
+      "mimeType": "image/jpeg",
+      "url": "https://www.thumbtack.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/test_message_attachment.jpg",
+      "description": "test message attachment"
+    }
+  ]
 }
 ```
 
@@ -878,6 +904,12 @@ message | object | JSON message object | Y
 message.messageID | string | ID of the message | Y
 message.createTimestamp | string | Unix timestamp (seconds) of when message was created in UTC timezone | Y
 message.text | string | Text of the message | Y
+message.attachments | array | Array of JSON attachment objects included in the message | N
+message.attachments.[i].fileName | string | Attachment file name | Y
+message.attachments.[i].fileSize | number | Attachment size in bytes | Y
+message.attachments.[i].mimeType | string | Attachment MIME type | Y
+message.attachments.[i].url | string | URL to download attachment | Y
+message.attachments.[i].description | string | User-provided description of the attachment | N
 
 ## Update Lead
 
