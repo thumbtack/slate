@@ -720,11 +720,11 @@ Thumbtack with username and password for Thumbtack to call these endpoints.
     ],
     "attachments": [
       {
-        "fileName": "test_request_attachment.jpg",
-        "fileSize": 20,
+        "fileName": "door.jpg",
+        "fileSize": 1139,
         "mimeType": "image/jpeg",
-        "url": "https://www.thumbtack.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/test_request_attachment.jpg",
-        "description": "test request attachment"
+        "url": "https://www.thumbtack.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/door.jpg",
+        "description": "my stain"
       }
     ]
   },
@@ -860,11 +860,11 @@ When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
   },
   "attachments": [
     {
-      "fileName": "test_message_attachment.jpg",
-      "fileSize": 20,
+      "fileName": "fridge.jpg",
+      "fileSize": 3940,
       "mimeType": "image/jpeg",
-      "url": "https://www.thumbtack.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/test_message_attachment.jpg",
-      "description": "test message attachment"
+      "url": "https://www.thumbtack.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/fridge.jpg",
+      "description": "refrigerator"
     }
   ]
 }
@@ -956,6 +956,85 @@ chargeState | string | leadPrice Charge state value | N
 When `leadPrice` is null, you will get `chargeState` as null.
 
 When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
+
+## Reviews
+
+> Sample Request Body
+
+```json
+{
+  "review": {
+    "businessID": 286845156044809661,
+    "categoryID": 299614694480093245,
+    "createTime": 1517986598726,
+    "leadID": 299614694480093245,
+    "modifyTime": 1517986598726,
+    "photos": [
+      {
+        "description": "test review photo",
+        "fileName": "test_review_photo.jpg",
+        "fileSize": 20,
+        "mimeType": "image/jpeg",
+        "url": "test.url.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/test_review_photo.jpg"
+      }
+    ],
+    "rating": 4,
+    "reviewID": 318840849076158553,
+    "reviewerNickname": "Nick Name",
+    "text": "best service ever",
+    "verified": true
+  },
+  "reviewEventType": "REVIEW_ADDED"
+}
+```
+
+> Sample Request (assuming above JSON was saved as data.json)
+
+```shell
+curl -X POST https://www.api.[partner].com/v1/review
+    -d data.json
+    -H 'Content-Type:application/json'
+    --user '<thumbtack_username>:<thumbtack_password>'
+```
+
+This endpoint will be called by Thumbtack to notify Partners of new reviews. Partners should return back 200 on successful processing of the request.
+
+### HTTP Endpoint
+
+`POST https://api.[partner].com/v1/review`
+
+*Note that the naming of this endpoint is flexible and dictated by the Partner.*
+
+### Expected Request Body
+
+Parameter | Type    | Description                                                                                    | Required
+--------- |---------|------------------------------------------------------------------------------------------------| -------
+review | object  | JSON review object                                                                             | Y
+review.reviewID | string  | ID of the review                                                                               | Y
+review.businessID | string  | ID of the business (pro) who is receiving the review                                           | Y
+review.leadID | string  | ID of the lead tied to the review. Only present if the review is verified                      | N
+review.categoryID | string  | Thumbtack ID of the request category of the lead. Only present if the review is verified       | N
+review.rating | number  | Review rating, from 1-5                                                                        | Y
+review.text | string  | Review text. Only present if the review is verified                                            | N
+review.reviewerName | string  | Name of reviewer. Only present if the review is verified                                       | N
+review.createTime | number  | Epoch time of review creation                                                                  | Y
+review.modifyTime | number  | Epoch time of last review modification                                                         | N
+review.verified | boolean | This means that the review has a corresponding lead on Thumbtack                               | Y
+review.photos | array   | Array of JSON attachment objects included in the review. Only present if the review is verified | N
+review.photos.[i].fileName | string  | Attachment file name                                                                           | Y
+review.photos.[i].fileSize | number  | Attachment size in bytes                                                                       | Y
+review.photos.[i].mimeType | string  | Attachment MIME type                                                                           | Y
+review.photos.[i].url | string  | URL to download attachment                                                                     | Y
+review.photos.[i].description | string  | User-provided description of the attachment                                                    | N
+reviewEventType | string | The event type that triggered the webhook request | Y
+
+### Review Event Types
+
+Currently the only supported value for the `reviewEventType` field is `REVIEW_ADDED`. This event occurs when a new review is added.
+
+### Verified Reviews
+
+Reviews from Thumtback customers are labeled as "verified". This kind of review is tied to a leadID.
 
 # Development Guide
 
