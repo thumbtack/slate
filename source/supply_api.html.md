@@ -964,11 +964,11 @@ When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
 ```json
 {
   "review": {
-    "businessID": 286845156044809661,
-    "categoryID": 299614694480093245,
-    "createTime": 1517986598726,
-    "leadID": 299614694480093245,
-    "modifyTime": 1517986598726,
+    "businessID": "286845156044809661",
+    "categoryID": "299614694480093245",
+    "createTime": "1517986598726",
+    "leadID": "299614694480093245",
+    "modifyTime": "1517986598726",
     "photos": [
       {
         "description": "test review photo",
@@ -978,8 +978,8 @@ When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
         "url": "test.url.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/test_review_photo.jpg"
       }
     ],
-    "rating": 4,
-    "reviewID": 318840849076158553,
+    "rating": "4",
+    "reviewID": "318840849076158553",
     "reviewerNickname": "Nick Name",
     "text": "best service ever",
     "verified": true
@@ -1014,11 +1014,11 @@ review.reviewID | string  | ID of the review                                    
 review.businessID | string  | ID of the business (pro) who is receiving the review                                           | Y
 review.leadID | string  | ID of the lead tied to the review. Only present if the review is verified                      | N
 review.categoryID | string  | Thumbtack ID of the request category of the lead. Only present if the review is verified       | N
-review.rating | number  | Review rating, from 1-5                                                                        | Y
+review.rating | string  | Review rating, from 1-5                                                                        | Y
 review.text | string  | Review text. Only present if the review is verified                                            | N
 review.reviewerName | string  | Name of reviewer. Only present if the review is verified                                       | N
-review.createTime | number  | Epoch time of review creation                                                                  | Y
-review.modifyTime | number  | Epoch time of last review modification                                                         | N
+review.createTime | string  | Epoch time of review creation                                                                  | Y
+review.modifyTime | string  | Epoch time of last review modification                                                         | N
 review.verified | boolean | This means that the review has a corresponding lead on Thumbtack                               | Y
 review.photos | array   | Array of JSON attachment objects included in the review. Only present if the review is verified | N
 review.photos.[i].fileName | string  | Attachment file name                                                                           | Y
@@ -1026,7 +1026,7 @@ review.photos.[i].fileSize | number  | Attachment size in bytes                 
 review.photos.[i].mimeType | string  | Attachment MIME type                                                                           | Y
 review.photos.[i].url | string  | URL to download attachment                                                                     | Y
 review.photos.[i].description | string  | User-provided description of the attachment                                                    | N
-reviewEventType | string | The event type that triggered the webhook request | Y
+reviewEventType | string  | The event type that triggered the webhook request | Y
 
 ### Review Event Types
 
