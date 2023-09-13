@@ -215,7 +215,6 @@ Below table shows the profile pill to label mapping.
 Profile Pill Name | Label 
 ----------------- | -------
 popular | In high demand 
-remote | Offers remote services 
 licensed | Licensed pro 
 low_price | Great Value 
 
