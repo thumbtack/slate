@@ -20,6 +20,8 @@ The purpose of Thumbtack's Partner API is to enable Partners to seamlessly serve
 platforms. Currently, the content being served by the API includes information about Thumbtack categories and Pros.
 However, our API is under active development, so we are constantly adding more content to the API upon request.  
 
+Partners currently need approval to integrate with us. To request approval, feel free to reach out to us at teampartnerships AT thumbtack DOT com
+
 Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Terms of Use</a>.
 
 # Partnership Mechanics
@@ -403,5 +405,4 @@ results.imageURL | string | Thumbtack image URL for the category | Y
 
 # Contact Us
 
-If you have any questions, feel free to reach out to us at
-partnerproducts-eng AT thumbtack DOT com
+If you have any questions, feel free to reach out to us at teampartnerships AT thumbtack DOT com
