@@ -23,6 +23,8 @@ acquisition workflows. This is accomplished by supporting two functions - **(1) 
 Thumbtack will call. To support two way messaging, both Thumbtack and the Supply Partner will expose
 API endpoints for the other party to call.
 
+Partners currently need approval to integrate with us. To request approval, feel free to reach out to us at teampartnerships AT thumbtack DOT com
+
 Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Terms of Use</a>.
 
 # Authentication
@@ -1151,5 +1153,4 @@ Thumbtack's messages endpoint when they want to respond to a Thumbtack customer.
 
 # Contact Us
 
-If you have any questions, feel free to reach out to us at
-partnerproducts-eng AT thumbtack DOT com
+If you have any questions, feel free to reach out to us at teampartnerships AT thumbtack DOT com
