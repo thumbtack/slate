@@ -112,7 +112,6 @@ OR
         "introduction": "We opened our services a few years ago and strive to deliver only the best experience and quality for our clients.",
         "pills": [
           "licensed",
-          "remote",
           "popular"
         ],
         "location": "Mountain View, CA",
