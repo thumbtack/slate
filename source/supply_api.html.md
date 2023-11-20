@@ -858,17 +858,17 @@ When `leadPrice` is non-null, you will get `chargeState` as `Charged`.
   "message": {
     "messageID": "8699842694484326245",
     "createTimestamp": "1498760294",
-    "text": "Do you offer fridge cleaning or is that extra?"
-  },
-  "attachments": [
-    {
-      "fileName": "fridge.jpg",
-      "fileSize": 3940,
-      "mimeType": "image/jpeg",
-      "url": "https://www.thumbtack.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/fridge.jpg",
-      "description": "refrigerator"
-    }
-  ]
+    "text": "Do you offer fridge cleaning or is that extra?",
+    "attachments": [
+      {
+        "fileName": "fridge.jpg",
+        "fileSize": 3940,
+        "mimeType": "image/jpeg",
+        "url": "https://www.thumbtack.com/attachment/b180b7d3bf981dd2896732f979f44fbf45fc4224/fridge.jpg",
+        "description": "refrigerator"
+      }
+    ]
+  }
 }
 ```
 
