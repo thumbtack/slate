@@ -319,7 +319,7 @@ curl --location --request GET 'https://pro-api.thumbtack.com/v1/partners/discove
       "categoryName": "gutter cleaners",
       "categoryDisplayName": "Gutter Cleaning and Maintenance",
       "activeServices": null,
-      "url": "https://d.thumbtack.com/k/gutter-cleaners/near-me?utm_source=cma-foxy&utm_medium=partnership",
+      "url": "https://staging-partner.thumbtack.com/k/gutter-cleaners/near-me?utm_source=cma-foxy&utm_medium=partnership",
       "imageURL": "https://staging-next-images-cdn.thumbtack.com/i/323234414494916677/small/standard/hero"
     },
     {
@@ -337,7 +337,7 @@ curl --location --request GET 'https://pro-api.thumbtack.com/v1/partners/discove
       "categoryName": "lawn care",
       "categoryDisplayName": "Full Service Lawn Care",
       "activeServices": null,
-      "url": "https://d.thumbtack.com/k/lawn-care/near-me?utm_source=cma-foxy&utm_medium=partnership",
+      "url": "https://staging-partner.thumbtack.com/k/lawn-care/near-me?utm_source=cma-foxy&utm_medium=partnership",
       "imageURL": "https://staging-next-images-cdn.thumbtack.com/i/323632148692721733/small/standard/hero"
     },
     …
