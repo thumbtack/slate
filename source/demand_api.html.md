@@ -120,7 +120,7 @@ OR
         "num_of_employees": 2,
         "has_background_check": true,
         "business_location": "Half Moon Bay, CA",
-        "request_flow_iframe_url": "https://staging-partner.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=392519353064644609&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041"
+        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=392519353064644609&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041"
       },
       {
          "service_id":"327730960171982897",
@@ -146,7 +146,7 @@ OR
         "num_of_employees": 3,
         "has_background_check": true,
         "business_location": "San Francisco, CA",
-        "request_flow_iframe_url": "https://staging-partner.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=467833149616365575&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041"
+        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=467833149616365575&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041"
       },
       ...
   ]
@@ -325,8 +325,8 @@ curl --location --request GET 'https://pro-api.thumbtack.com/v1/partners/discove
       "categoryName": "gutter cleaners",
       "categoryDisplayName": "Gutter Cleaning and Maintenance",
       "activeServices": null,
-      "url": "https://staging-partner.thumbtack.com/k/gutter-cleaners/near-me?utm_source=cma-foxy&utm_medium=partnership",
-      "imageURL": "https://staging-next-images-cdn.thumbtack.com/i/323234414494916677/small/standard/hero"
+      "url": "https://www.thumbtack.com/k/gutter-cleaners/near-me?utm_source=cma-foxy&utm_medium=partnership",
+      "imageURL": "https://production-next-images-cdn.thumbtack.com/i/323234414494916677/small/standard/hero"
     },
     {
       "taskDetails": {
@@ -343,8 +343,8 @@ curl --location --request GET 'https://pro-api.thumbtack.com/v1/partners/discove
       "categoryName": "lawn care",
       "categoryDisplayName": "Full Service Lawn Care",
       "activeServices": null,
-      "url": "https://staging-partner.thumbtack.com/k/lawn-care/near-me?utm_source=cma-foxy&utm_medium=partnership",
-      "imageURL": "https://staging-next-images-cdn.thumbtack.com/i/323632148692721733/small/standard/hero"
+      "url": "https://www.thumbtack.com/k/lawn-care/near-me?utm_source=cma-foxy&utm_medium=partnership",
+      "imageURL": "https://production-next-images-cdn.thumbtack.com/i/323632148692721733/small/standard/hero"
     },
     …
   ]
