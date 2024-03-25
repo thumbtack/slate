@@ -120,7 +120,8 @@ OR
         "num_of_employees": 2,
         "has_background_check": true,
         "business_location": "Half Moon Bay, CA",
-        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=392519353064644609&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041"
+        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=392519353064644609&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041",
+        "response_time_hours": 0.16
       },
       {
          "service_id":"327730960171982897",
@@ -146,7 +147,8 @@ OR
         "num_of_employees": 3,
         "has_background_check": true,
         "business_location": "San Francisco, CA",
-        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=467833149616365575&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041"
+        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=467833149616365575&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041",
+        "response_time_hours": 1.53
       },
       ...
   ]
@@ -214,6 +216,7 @@ results.num_of_employees | number  | Number of employees in the Thumbtack Pro's 
 results.has_background_check | boolean | Has background check is done for the Thumbtack Pro's business?                                                                                                                          | N
 results.business_location | string  | Location of the Thumbtack Pro's business                                                                                                                                                | Y
 results.request_flow_iframe_url | string  | RequestFlow Iframe URL for Thumbtack Pro's business                                                                                                                                     | Y
+results.response_time_hours | number  | Average time in hours that the pro respond to contacts | N
 
 ### Profile Pills
 Profile pill name are converted into label on the Thumbtack website. 
