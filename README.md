@@ -57,6 +57,22 @@ bundle exec middleman server
 # OR run this to run with vagrant
 vagrant up
 ```
+5. Trouble shooting (especially for M1 Mac users): 
+
+If `bundle install` complains about something like `error: implicit declaration of function 'ffi_prep_closure_loc' is invalid in C99 [-Werror,-Wimplicit-function-declaration]` , try resolving with the following command:
+```shell
+# run locally
+sudo gem install ffi -v '1.11.1' --source 'https://rubygems.org/' -- --with-cflags="-Wno-error=implicit-function-declaration"
+```
+Then you can retry `bundle install`. It should work this time.
+
+If `bundle exec middleman server` complains about `TypeError: Unable to resolve type 'size_t'`,  the following command should fix it: 
+```shell
+# run locally
+sudo gem pristine ffi sassc
+bundle update ffi
+```
+
 
 You can now see the docs at http://localhost:4567. Whoa! That was fast!
 
