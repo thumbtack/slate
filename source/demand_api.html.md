@@ -228,6 +228,18 @@ popular | In high demand
 licensed | Licensed pro 
 low_price | Great Value 
 
+### Response time
+The response_time_hours number is translated to an optional text field on the Thumbtack website. 
+Below table shows the suggested response time hours to text mapping.
+
+reponse_time_hours | Text 
+----------------- | -------
+0 or empty | (no text)
+> 0 and < 1 | Responds in about x min
+>= 1 and <= 4 | Responds in about x hour(s)
+> 4 and <= 24 | Responds within a day
+> 24 | (no text)
+
 ## Categories
 
 > Sample Request
