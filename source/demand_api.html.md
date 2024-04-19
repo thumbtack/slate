@@ -18,7 +18,7 @@ search: true
 
 The purpose of Thumbtack's Partner API is to enable Partners to seamlessly serve Thumbtack content on Partner
 platforms. Currently, the content being served by the API includes information about Thumbtack categories and Pros.
-However, our API is under active development, so we are constantly adding more content to the API upon request.  
+However, our API is under active development, so we are constantly adding more content to the API upon request.
 
 Partners currently need approval to integrate with us. To request approval, feel free to reach out to us at teampartnerships AT thumbtack DOT com
 
@@ -26,17 +26,18 @@ Your use of our API is subject to Thumbtack's <a href='#api-terms-of-use'>API Te
 
 # Partnership Mechanics
 
-1. Partners show Thumbtack content (Pros and/or categories) on their platforms.   
+1. Partners show Thumbtack content (Pros and/or categories) on their platforms.
 2. Thumbtack provides links for each piece of content. These links contain partner tracking information, which allow
-Thumbtack to attribute the Partner's users to the Partner.  
-3. By clicking the Thumbtack content, the Partner's users are directed to Thumbtack.   
-4. When a Partner's user contacts a Pro on Thumbtack, the associated revenue is shared with the Partner.  
+   Thumbtack to attribute the Partner's users to the Partner.
+3. By clicking the Thumbtack content, the Partner's users are directed to Thumbtack.
+4. When a Partner's user contacts a Pro on Thumbtack, the associated revenue is shared with the Partner.
 
 # Spotlight
+
 ## Nextdoor
 
 <img src="images/nextdoor.png" alt="Nextdoor Example" title="Nextdoor Example" height="370px"
-    style="display:block; margin-left:auto; margin-right:auto;""/>
+style="display:block; margin-left:auto; margin-right:auto;""/>
 
 ## News Break
 
@@ -51,14 +52,14 @@ Thumbtack to attribute the Partner's users to the Partner.
 
 > To authorize, use this code:
 
- ```shell
- # With shell, you can just pass the correct header with each request
- curl "api_endpoint_here"
-    -H "Authorization: AUTH_HEADER"
+```shell
+# With shell, you can just pass the correct header with each request
+curl "api_endpoint_here"
+   -H "Authorization: AUTH_HEADER"
 ```
 
 > Make sure to replace `AUTH_HEADER` with your personal header.
- 
+
 Where applicable, APIs use HTTP basic access authentication. Thumbtack will provide Partners with a username
 and password. The basic header looks as follows:
 
@@ -66,14 +67,14 @@ and password. The basic header looks as follows:
 
 `<encoding>` is the base64 encoding of the username followed by a colon, followed by the password.
 
-Thumbtack will provide Partners with two sets of credentials - one for Thumbtack's test environment and 
+Thumbtack will provide Partners with two sets of credentials - one for Thumbtack's test environment and
 one for Thumbtack's production environment.
 
 # Endpoints
 
-Thumbtack exposes the following endpoints for Partners. 
-All endpoints are versioned to support future schema changes. 
-Endpoints will use HTTP basic access authentication, and Thumbtack will provide 
+Thumbtack exposes the following endpoints for Partners.
+All endpoints are versioned to support future schema changes.
+Endpoints will use HTTP basic access authentication, and Thumbtack will provide
 Partners with username and password for Partners to call these endpoints.
 
 ## Pros
@@ -83,11 +84,11 @@ Partners with username and password for Partners to call these endpoints.
 ```shell
 curl https://api.thumbtack.com/v1/partners/discoverylite/pros?category=<category>&zip_code=<zip_code>&utm_source=<utm_source>
   -H "Authorization: AUTH_HEADER"
-  -H "Content-Type:application/json"   
-OR 
+  -H "Content-Type:application/json"
+OR
  curl https://api.thumbtack.com/v1/partners/discoverylite/pros?category_pk=<category_pk>&zip_code=<zip_code>&utm_source=<utm_source>
   -H "Authorization: AUTH_HEADER"
-  -H "Content-Type:application/json" 
+  -H "Content-Type:application/json"
 ```
 
 > The above command returns JSON structured like this:
@@ -158,25 +159,25 @@ OR
 
 This endpoint is used to fetch a list of Thumbtack Pros for a given market. Markets are defined to be the combination
 of a category and a zip code. Thumbtack will handle query translation for the Partner such that the Partner can provide
-free form text as the category and Thumbtack will convert the provided text to the corresponding Thumbtack category. 
+free form text as the category and Thumbtack will convert the provided text to the corresponding Thumbtack category.
 If a Partner does not have a query, they can directly provide the category name as the query.
 
 Parameters for the endpoint will be passed in as URL query parameters.
 
 ### Parameters (passed in via URL)
 
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-category | string | Query string the user is searching for | N
-category_pk | string | PK of the category that you received as a part of homecare/checklist API  | N
-zip_code | string | Zip code the user is located in | Y
-utm_source | string | Partner ID for attribution purposes | Y
+| Parameter   | Type   | Description                                                              | Required |
+| ----------- | ------ | ------------------------------------------------------------------------ | -------- |
+| category    | string | Query string the user is searching for                                   | N        |
+| category_pk | string | PK of the category that you received as a part of homecare/checklist API | N        |
+| zip_code    | string | Zip code the user is located in                                          | Y        |
+| utm_source  | string | Partner ID for attribution purposes                                      | Y        |
 
 **Note:**
 In each request atlas one category specific parameter should be available. Either category or category_pk.
-* If you are using /category API then pass a category with valid value in request.
-* If you are using /homecare/checklist API then pass category_pk with valid PK in the request.
 
+- If you are using /category API then pass a category with valid value in request.
+- If you are using /homecare/checklist API then pass category_pk with valid PK in the request.
 
 ### HTTP Endpoint (Production Environment)
 
@@ -190,64 +191,66 @@ In each request atlas one category specific parameter should be available. Eithe
 
 Thumbtack will provide a JSON response that contains the following fields.
 
-Parameter | Type    | Description                                                                                                                                                                             | Required
---------- |---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| --------
-results | array   | Array of Thumbtack Pros                                                                                                                                                                 | Y
-results.service_id | string  | Thumbtack ID of the Pro's business                                                                                                                                                      | Y
-results.business_name | string  | Name of the Thumbtack Pro's business                                                                                                                                                    | Y
-results.rating | number  | Rating (1-5 scale) of the Pro                                                                                                                                                           | Y
-results.num_reviews | number  | Number of reviews the Pro has on Thumbtack                                                                                                                                              | Y
-results.years_in_business | number  | Number of years the Pro has been in business                                                                                                                                            | N
-results.num_hires | number  | Number of times the Pro has been hired on Thumbtack                                                                                                                                     | N
-results.thumbtack_url | string  | Thumbtack URL for the Pro                                                                                                                                                               | Y
-results.image_url | string  | Image URL for the Pro's Thumbtack profile                                                                                                                                               | Y
-results.background_image_url | string  | Background Image URL for the Pro's Thumbtack profile                                                                                                                                    | Y
-results.featured_review | string  | Review text Thumbtack has chosen to highlight about the Pro                                                                                                                             | N
-results.quote | object  | Information around the cost of the job                                                                                                                                                  | N
-results.quote.starting_cost | number  | The tentative cost of the quote in cents, given that we have minimal information about the customer’s request                                                                           | N
-results.quote.cost_unit | string  | The unit of measurement corresponding to the starting_cost. May be temporal (“Hour”), non-temporal (“Dog”, “Session”, “Visit”, “sq ft”, etc.), or omitted if starting_cost is a flat rate | N
-results.introduction | string  | Introduction of the Thumbtack Pro's business                                                                                                                                            | Y
-results.ProfilePill | array   | Profile pills for the Thumbtack Pro's business                                                                                                                                          | Y
-results.location | string  | Location of the Customer                                                                                                                                                                | N
-results.is_top_pro | boolean | Is Thumbtack Pro is top pro or not?                                                                                                                                                     | N
-results.similar_jobs_done | number  | Number if similar jobs done by Thumbtack Pro's                                                                                                                                          | N
-results.license_verified | boolean | Is licence verified for the Thumbtack Pro's business?                                                                                                                                   | N
-results.num_of_employees | number  | Number of employees in the Thumbtack Pro's business                                                                                                                                     | N
-results.has_background_check | boolean | Has background check is done for the Thumbtack Pro's business?                                                                                                                          | N
-results.business_location | string  | Location of the Thumbtack Pro's business                                                                                                                                                | Y
-results.request_flow_iframe_url | string  | RequestFlow Iframe URL for Thumbtack Pro's business                                                                                                                                     | Y
-results.response_time_hours | number  | Average time in hours that the pro respond to contacts | N
+| Parameter                       | Type    | Description                                                                                                                                                                               | Required |
+| ------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| results                         | array   | Array of Thumbtack Pros                                                                                                                                                                   | Y        |
+| results.service_id              | string  | Thumbtack ID of the Pro's business                                                                                                                                                        | Y        |
+| results.business_name           | string  | Name of the Thumbtack Pro's business                                                                                                                                                      | Y        |
+| results.rating                  | number  | Rating (1-5 scale) of the Pro                                                                                                                                                             | Y        |
+| results.num_reviews             | number  | Number of reviews the Pro has on Thumbtack                                                                                                                                                | Y        |
+| results.years_in_business       | number  | Number of years the Pro has been in business                                                                                                                                              | N        |
+| results.num_hires               | number  | Number of times the Pro has been hired on Thumbtack                                                                                                                                       | N        |
+| results.thumbtack_url           | string  | Thumbtack URL for the Pro                                                                                                                                                                 | Y        |
+| results.image_url               | string  | Image URL for the Pro's Thumbtack profile                                                                                                                                                 | Y        |
+| results.background_image_url    | string  | Background Image URL for the Pro's Thumbtack profile                                                                                                                                      | Y        |
+| results.featured_review         | string  | Review text Thumbtack has chosen to highlight about the Pro                                                                                                                               | N        |
+| results.quote                   | object  | Information around the cost of the job                                                                                                                                                    | N        |
+| results.quote.starting_cost     | number  | The tentative cost of the quote in cents, given that we have minimal information about the customer’s request                                                                             | N        |
+| results.quote.cost_unit         | string  | The unit of measurement corresponding to the starting_cost. May be temporal (“Hour”), non-temporal (“Dog”, “Session”, “Visit”, “sq ft”, etc.), or omitted if starting_cost is a flat rate | N        |
+| results.introduction            | string  | Introduction of the Thumbtack Pro's business                                                                                                                                              | Y        |
+| results.ProfilePill             | array   | Profile pills for the Thumbtack Pro's business                                                                                                                                            | Y        |
+| results.location                | string  | Location of the Customer                                                                                                                                                                  | N        |
+| results.is_top_pro              | boolean | Is Thumbtack Pro is top pro or not?                                                                                                                                                       | N        |
+| results.similar_jobs_done       | number  | Number if similar jobs done by Thumbtack Pro's                                                                                                                                            | N        |
+| results.license_verified        | boolean | Is licence verified for the Thumbtack Pro's business?                                                                                                                                     | N        |
+| results.num_of_employees        | number  | Number of employees in the Thumbtack Pro's business                                                                                                                                       | N        |
+| results.has_background_check    | boolean | Has background check is done for the Thumbtack Pro's business?                                                                                                                            | N        |
+| results.business_location       | string  | Location of the Thumbtack Pro's business                                                                                                                                                  | Y        |
+| results.request_flow_iframe_url | string  | RequestFlow Iframe URL for Thumbtack Pro's business                                                                                                                                       | Y        |
+| results.response_time_hours     | number  | Average time in hours that the pro respond to contacts                                                                                                                                    | N        |
 
 ### Profile Pills
-Profile pill name are converted into label on the Thumbtack website. 
+
+Profile pill name are converted into label on the Thumbtack website.
 Below table shows the profile pill to label mapping.
 
-Profile Pill Name | Label 
------------------ | -------
-popular | In high demand 
-licensed | Licensed pro 
-low_price | Great Value 
+| Profile Pill Name | Label          |
+| ----------------- | -------------- |
+| popular           | In high demand |
+| licensed          | Licensed pro   |
+| low_price         | Great Value    |
 
 ### Response time
-The response_time_hours number is translated to an optional text field on the Thumbtack website. 
+
+The response_time_hours number is translated to an optional text field on the Thumbtack website.
 Below table shows the suggested response time hours to text mapping.
 
-reponse_time_hours | Text 
------------------ | -------
-0 or empty | (no text)
-> 0 and < 1 | Responds in about x min
->= 1 and <= 4 | Responds in about x hour(s)
-> 4 and <= 24 | Responds within a day
-> 24 | (no text)
+| reponse_time_hours | Text                        |
+| ------------------ | --------------------------- |
+| 0 or empty         | (no text)                   |
+| > 0 and < 1        | Responds in about x min     |
+| >= 1 and <= 4      | Responds in about x hour(s) |
+| > 4 and <= 24      | Responds within a day       |
+| > 24               | (no text)                   |
 
-## Categories
+## Categories (Deprecated)
 
 > Sample Request
 
 ```shell
 curl https://api.thumbtack.com/v1/partners/discoverylite/categories?zip_code=<zip_code>&utm_source=<utm_source>
   -H "Authorization: AUTH_HEADER"
-  -H "Content-Type:application/json" 
+  -H "Content-Type:application/json"
 ```
 
 > The above command returns JSON structured like this:
@@ -275,19 +278,20 @@ curl https://api.thumbtack.com/v1/partners/discoverylite/categories?zip_code=<zi
 
 ```
 
+### Deprecated endpoint
+
 This endpoint is used to fetch a list of Thumbtack Categories for a given zip code. This endpoint is useful if there
-does not yet exist a search query and the Partner merely wants to showcase the variety of categories Thumbtack 
-actively supports. 
+does not yet exist a search query and the Partner merely wants to showcase the variety of categories Thumbtack
+actively supports.
 
 Parameters for the endpoint will be passed in as URL query parameters.
 
 ### Parameters (passed in via URL)
 
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-zip_code | string | Zip code the user is located in | Y
-utm_source | string | Partner ID for attribution purposes | Y
-
+| Parameter  | Type   | Description                         | Required |
+| ---------- | ------ | ----------------------------------- | -------- |
+| zip_code   | string | Zip code the user is located in     | Y        |
+| utm_source | string | Partner ID for attribution purposes | Y        |
 
 ### HTTP Endpoint (Production Environment)
 
@@ -301,14 +305,14 @@ utm_source | string | Partner ID for attribution purposes | Y
 
 Thumbtack will provide a JSON response that contains the following fields.
 
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-results | array | Array of Thumbtack categories | Y
-results.categoryName | string | Name of the category (can use this category name as the `category` query param for the aforementioned Pros endpoint) | Y
-results.categoryDisplayName | string | The category name to display to users | Y
-results.activeServices | number | Number of active Thumbtack Pros for the category and zip code (null means that we can not get the number of active services for the (category, zip code) combination) | Y
-results.url | string | Thumbtack URL for the category | Y
-results.imageURL | string | Thumbtack image URL for the category | Y
+| Parameter                   | Type   | Description                                                                                                                                                           | Required |
+| --------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| results                     | array  | Array of Thumbtack categories                                                                                                                                         | Y        |
+| results.categoryName        | string | Name of the category (can use this category name as the `category` query param for the aforementioned Pros endpoint)                                                  | Y        |
+| results.categoryDisplayName | string | The category name to display to users                                                                                                                                 | Y        |
+| results.activeServices      | number | Number of active Thumbtack Pros for the category and zip code (null means that we can not get the number of active services for the (category, zip code) combination) | Y        |
+| results.url                 | string | Thumbtack URL for the category                                                                                                                                        | Y        |
+| results.imageURL            | string | Thumbtack image URL for the category                                                                                                                                  | Y        |
 
 ## Homecare/checklist
 
@@ -317,7 +321,7 @@ results.imageURL | string | Thumbtack image URL for the category | Y
 ```shell
 curl --location --request GET 'https://pro-api.thumbtack.com/v1/partners/discoverylite/homecare/checklist?zip_code=96061&property_type=single_family_home&utm_source=cma-foxy'
   -H 'Authorization: AUTH_HEADER'
-  -H "Content-Type:application/json" 
+  -H "Content-Type:application/json"
 ```
 
 > The above command returns JSON structured like this:
@@ -366,28 +370,29 @@ curl --location --request GET 'https://pro-api.thumbtack.com/v1/partners/discove
 }
 ```
 
-This endpoint is used to fetch a list of Thumbtack Categories and Task Details for a given zip code and property type. 
-This endpoint is useful if there does not yet exist a search query and the 
+This endpoint is used to fetch a list of Thumbtack Categories and Task Details for a given zip code and property type.
+This endpoint is useful if there does not yet exist a search query and the
 Partner merely wants to showcase the variety of categories Thumbtack actively supports.
 
 Parameters for the endpoint will be passed in as URL query parameters.
 
 ### Parameters (passed in via URL)
 
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-zip_code | string | Zip code the user is located in | Y
-property_type | string | Pass valid property type from the list provided below. | Y
-utm_source | string | Partner ID for attribution purposes | Y
+| Parameter     | Type   | Description                                            | Required |
+| ------------- | ------ | ------------------------------------------------------ | -------- |
+| zip_code      | string | Zip code the user is located in                        | Y        |
+| property_type | string | Pass valid property type from the list provided below. | Y        |
+| utm_source    | string | Partner ID for attribution purposes                    | Y        |
 
 #### PROPERTY TYPES:
-* UNKNOWN
-* APARTMENT
-* SINGLE_FAMILY_HOME
-* COMMERCIAL
-* TOWNHOUSE
-* MULTI_FAMILY
-* OTHER
+
+- UNKNOWN
+- APARTMENT
+- SINGLE_FAMILY_HOME
+- COMMERCIAL
+- TOWNHOUSE
+- MULTI_FAMILY
+- OTHER
 
 ### HTTP Endpoint (Production Environment)
 
@@ -401,25 +406,26 @@ utm_source | string | Partner ID for attribution purposes | Y
 
 Thumbtack will provide a JSON response that contains the following fields.
 
-Parameter | Type | Description | Required
---------- | ---- | ----------- | --------
-results | array | Array of Thumbtack categories | Y
-results.taskDetails | object | Task details json block | Y
-results.taskDetails.title | string | Title of the task | Y
-results.taskDetails.description | string | Description of the task | Y
-results.taskDetails.tagline | string | Tagline of the task | Y
-results.taskDetails.avgCost | json | Cost json block of the task | Y
-results.taskDetails.avgCost.max | number | Maximum cost of the task | Y
-results.taskDetails.avgCost.min | number | Minimum cost of the task | Y
-results.categoryPK | string | PK of the category (can use this category_pk as the category query param for the aforementioned Pros endpoint) | Y
-result.taskPK | string | PK of the task | Y
-results.categoryName | string | Name of the category (can use this category name as the `category` query param for the aforementioned Pros endpoint) | Y
-results.categoryDisplayName | string | The category name to display to users | Y
-results.activeServices | number | Number of active Thumbtack Pros for the category and zip code (null means that we can not get the number of active services for the (category, zip code) combination) | Y
-results.url | string | Thumbtack URL for the category | Y
-results.imageURL | string | Thumbtack image URL for the category | Y
+| Parameter                       | Type   | Description                                                                                                                                                           | Required |
+| ------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| results                         | array  | Array of Thumbtack categories                                                                                                                                         | Y        |
+| results.taskDetails             | object | Task details json block                                                                                                                                               | Y        |
+| results.taskDetails.title       | string | Title of the task                                                                                                                                                     | Y        |
+| results.taskDetails.description | string | Description of the task                                                                                                                                               | Y        |
+| results.taskDetails.tagline     | string | Tagline of the task                                                                                                                                                   | Y        |
+| results.taskDetails.avgCost     | json   | Cost json block of the task                                                                                                                                           | Y        |
+| results.taskDetails.avgCost.max | number | Maximum cost of the task                                                                                                                                              | Y        |
+| results.taskDetails.avgCost.min | number | Minimum cost of the task                                                                                                                                              | Y        |
+| results.categoryPK              | string | PK of the category (can use this category_pk as the category query param for the aforementioned Pros endpoint)                                                        | Y        |
+| result.taskPK                   | string | PK of the task                                                                                                                                                        | Y        |
+| results.categoryName            | string | Name of the category (can use this category name as the `category` query param for the aforementioned Pros endpoint)                                                  | Y        |
+| results.categoryDisplayName     | string | The category name to display to users                                                                                                                                 | Y        |
+| results.activeServices          | number | Number of active Thumbtack Pros for the category and zip code (null means that we can not get the number of active services for the (category, zip code) combination) | Y        |
+| results.url                     | string | Thumbtack URL for the category                                                                                                                                        | Y        |
+| results.imageURL                | string | Thumbtack image URL for the category                                                                                                                                  | Y        |
 
 #### Response Size
+
 10 categories in result
 
 # Contact Us
