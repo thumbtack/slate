@@ -240,7 +240,7 @@ reponse_time_hours | Text
 > 4 and <= 24 | Responds within a day
 > 24 | (no text)
 
-## Categories
+## Categories (Deprecated)
 
 > Sample Request
 
@@ -274,6 +274,7 @@ curl https://api.thumbtack.com/v1/partners/discoverylite/categories?zip_code=<zi
 }
 
 ```
+### Deprecated (do not use)
 
 This endpoint is used to fetch a list of Thumbtack Categories for a given zip code. This endpoint is useful if there
 does not yet exist a search query and the Partner merely wants to showcase the variety of categories Thumbtack 
