@@ -256,6 +256,7 @@ curl https://api.thumbtack.com/v1/partners/discoverylite/categories?zip_code=<zi
 {
    "results":[
       {
+         "categoryPK": "124317070955717033",
          "categoryName":"air_conditioning_installation_replacement",
          "categoryDisplayName":"Central Air Conditioning Installation or Replacement",
          "activeServices":21,
@@ -263,6 +264,7 @@ curl https://api.thumbtack.com/v1/partners/discoverylite/categories?zip_code=<zi
          "imageURL":"https://production-next-images-cdn.thumbtack.com/i/327878539097268344/small/standard/hero",
       },
       {
+         "categoryPK": "240123621172183344",
          "categoryName":"exterior_painting",
          "categoryDisplayName":"Exterior Painting",
          "activeServices":15,
@@ -306,6 +308,7 @@ Thumbtack will provide a JSON response that contains the following fields.
 Parameter | Type | Description | Required
 --------- | ---- | ----------- | --------
 results | array | Array of Thumbtack categories | Y
+results.categoryPK | string | PK of the category (can use this category_pk as the category query param for the aforementioned Pros endpoint) | Y
 results.categoryName | string | Name of the category (can use this category name as the `category` query param for the aforementioned Pros endpoint) | Y
 results.categoryDisplayName | string | The category name to display to users | Y
 results.activeServices | number | Number of active Thumbtack Pros for the category and zip code (null means that we can not get the number of active services for the (category, zip code) combination) | Y
