@@ -120,7 +120,7 @@ OR
         "num_of_employees": 2,
         "has_background_check": true,
         "business_location": "Half Moon Bay, CA",
-        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=392519353064644609&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041",
+        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow?category_pk=109125193401647362&page_source=<partnerID>&service_pk=392519353064644609&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041",
         "response_time_hours": 0.16
       },
       {
@@ -147,7 +147,7 @@ OR
         "num_of_employees": 3,
         "has_background_check": true,
         "business_location": "San Francisco, CA",
-        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow/?category_pk=109125193401647362&page_source=<partnerID>&service_pk=467833149616365575&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041",
+        "request_flow_iframe_url": "https://www.thumbtack.com/embed/request-flow?category_pk=109125193401647362&page_source=<partnerID>&service_pk=467833149616365575&utm_medium=partnership&utm_source=<partnerID>&zip_code=94041",
         "response_time_hours": 1.53
       },
       ...
