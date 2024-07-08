@@ -799,7 +799,7 @@ customer.phone\*\* | string | Phone number of the customer if we have it | N
 business | object | JSON business object | Y
 business.businessID | string | ID of the business (pro) | Y
 business.name | string | Business name | Y
-price | string | Price estimate for the job | N
+price | string | Price estimate for the job. This can be a fixed price such as "$1,260.50". It can be a price per unit such as "$260/hour" or "$100/guest". The price may or may not contain a decimal. If a price isn't available, the value will be "N/A" | N
 leadType | string | Type of lead that Thumbtack is sending | N
 leadPrice | string | Estimated price that Pro will pay to Thumbtack | N
 chargeState | string | leadPrice Charge state value | N 
@@ -1064,7 +1064,7 @@ Feel free to use the sample request bodies provided throughout this guide to sim
 {
     "leadID": "380497493950742534",
     "createTimestamp": "1579643094",
-    "price": "More information needed to give an estimate",
+    "price": "$1,234.56/hour",
     "request": {
         "requestID": "380497492346044421",
         "category": "House Cleaning",
