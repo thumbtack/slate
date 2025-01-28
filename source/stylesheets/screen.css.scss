@@ -691,3 +691,39 @@ body {
 .highlight .w {
     background-color: $code-bg;
 }
+
+.banner {
+    background-color: #fff3cd;
+    color: #856404;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 16px;
+    border-bottom: 1px solid #ffeeba;
+    position: fixed;
+    top: 0;
+    left: $nav-width;
+    width: calc(100% - #{$nav-width});
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner p {
+    margin: 0;
+}
+
+.banner a {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+#deprecation-banner {
+    opacity: 1;
+    max-height: 100px;
+    overflow: hidden;
+}
+
+.page-wrapper {
+    margin-top: 60px;
+}
