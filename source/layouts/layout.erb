@@ -49,6 +49,9 @@ under the License.
   </head>
 
   <body class="<%= page_classes %>" data-languages="<%=h language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>">
+    <div id="deprecation-banner" class="banner">
+      <p>This API is now deprecated. Please upgrade to our <a href="https://developers.thumbtack.com/apidocs" target="_blank">latest API</a> as soon as possible.</p>
+    </div>
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -101,7 +104,7 @@ under the License.
         </ul>
       <% end %>
     </div>
-    <div class="page-wrapper">
+    <div class="page-wrapper" id="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <%= page_content %>
